@@ -1,5 +1,6 @@
 package com.onggiyonggi.domain.member.domain;
 
+import com.onggiyonggi.domain.member.dto.request.MemberRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,9 +20,8 @@ import lombok.NoArgsConstructor;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
-    private Long id;
+    private String id;
 
     @NotNull
     private String password;
@@ -29,5 +29,13 @@ public class Member {
     @Column(unique = true)
     @NotNull
     private String nickName;
+
+    public static Member toEntity(MemberRequestDto requestDto) {
+        return Member.builder()
+            .id(requestDto.getId())
+            .password(requestDto.getPassword())
+            .nickName(requestDto.getNickname())
+            .build();
+    }
 
 }

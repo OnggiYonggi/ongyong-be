@@ -6,10 +6,15 @@ import com.onggiyonggi.global.response.GeneralException;
 import com.onggiyonggi.global.response.Status;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,10 +22,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -66,35 +73,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatusCode status,
         WebRequest request
     ) {
-        Map<String, String> errors = new LinkedHashMap<>();
+        List<Map<String, String>> errors = new ArrayList<>();
         Body body = Status.BAD_REQUEST.getBody();
 
-        // 필드 에러 (각 필드별 유효성 검사 실패)
-        exception.getBindingResult().getFieldErrors()
-            .forEach(fieldError -> {
-                String fieldName = fieldError.getField();
-                String errorMessage = Optional.ofNullable(fieldError.getDefaultMessage()).orElse("");
-                errors.merge(fieldName, errorMessage, (existingError, newError) -> existingError + ", " + newError);
-            });
-
-        // 객체 레벨 에러 (예: `@Valid`가 적용된 클래스에서 `@AssertTrue` 같은 검증 실패)
-        exception.getBindingResult().getGlobalErrors()
-            .forEach(globalError -> {
-                String objectName = globalError.getObjectName();
-                String errorMessage = Optional.ofNullable(globalError.getDefaultMessage()).orElse("");
-                errors.merge(objectName, errorMessage, (existingError, newError) -> existingError + ", " + newError);
-            });
+        exception.getBindingResult().getFieldErrors().forEach(fieldError -> {
+            Map<String, String> errorDetail = new HashMap<>();
+            errorDetail.put("field", fieldError.getField());
+            errorDetail.put("message", fieldError.getDefaultMessage());
+            errors.add(errorDetail);
+        });
 
         ApiResponse<Object> response = ApiResponse.onFailure(body.getCode(), body.getMessage(), errors);
 
-        return super.handleExceptionInternal(
-            exception,
-            response,
-            headers,
-            Status.BAD_REQUEST.getHttpStatus(),
-            request
-        );
+        return ResponseEntity.status(Status.BAD_REQUEST.getHttpStatus()).body(response);
+
     }
+
 
     @ExceptionHandler(ConstraintViolationException.class) // 파라미터 유효성 검증 시 예외 처리
     public ResponseEntity<Object> handleConstraintViolationException(
