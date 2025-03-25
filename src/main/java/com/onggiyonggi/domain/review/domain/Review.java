@@ -2,7 +2,6 @@ package com.onggiyonggi.domain.review.domain;
 
 import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.store.domain.Store;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
