@@ -35,7 +35,7 @@ public class AuthController {
         @RequestBody @Valid LoginRequestDto requestDto) {
         JwtResponseDto jwtResponseDTO = authService.login(requestDto);
         return ApiResponse.success(Status.OK.getCode(),
-            Status.CREATED.getMessage(), jwtResponseDTO);
+            Status.OK.getMessage(), jwtResponseDTO);
     }
 
     @PostMapping("/signUp")
@@ -53,7 +53,7 @@ public class AuthController {
         Member member = customUserDetails.getMember();
         String result = member.getNickName();
         return ApiResponse.success(Status.OK.getCode(),
-            Status.CREATED.getMessage(), result);
+            Status.OK.getMessage(), result);
     }
 
 }

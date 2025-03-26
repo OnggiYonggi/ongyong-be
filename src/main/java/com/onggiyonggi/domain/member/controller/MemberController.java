@@ -27,7 +27,7 @@ public class MemberController {
     @Operation(summary = "test")
     public ApiResponse<?> test() {
         return ApiResponse.success(Status.OK.getCode(),
-            Status.CREATED.getMessage(), null);
+            Status.OK.getMessage(), null);
     }
 
 }
