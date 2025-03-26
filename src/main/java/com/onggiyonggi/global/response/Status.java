@@ -19,6 +19,15 @@ public enum Status {
     CONFLICT(HttpStatus.CONFLICT, "COMMON409", "이미 생성되었습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버에 오류가 발생했습니다."),
 
+    //멤버 관련 오류
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER404", "회원이 존재하지 않습니다."),
+    MEMBER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "MEMBER401", "회원 인증이 되지 않았습니다."),
+
+    //JWT 오류 응답
+    JWT_WRONG_TYPE_TOKEN(HttpStatus.BAD_REQUEST, "JWT400", "JWT 타입이 틀렸습니다."),
+    JWT_EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "JWT400", "JWT가 만료되었습니다."),
+    JWT_NULL(HttpStatus.UNAUTHORIZED, "JWT401", "JWT가 NULL입니다."),
+    JWT_INVALID(HttpStatus.FORBIDDEN, "JWT403", "JWT가 유효하지 않습니다."),
     ;
 
     private final HttpStatus httpStatus;
