@@ -1,6 +1,8 @@
 package com.onggiyonggi.domain.member.controller;
 
-import com.onggiyonggi.domain.member.dto.request.MemberRequestDto;
+import com.onggiyonggi.domain.auth.dto.request.LoginRequestDto;
+import com.onggiyonggi.domain.auth.dto.request.MemberRequestDto;
+import com.onggiyonggi.domain.auth.dto.response.JwtResponseDto;
 import com.onggiyonggi.domain.member.service.MemberService;
 import com.onggiyonggi.global.response.ApiResponse;
 import com.onggiyonggi.global.response.Status;
@@ -21,13 +23,11 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Operation(summary = "멤버 생성")
-    @PostMapping("")
-    public ApiResponse<?> createMember(
-        @RequestBody @Valid MemberRequestDto memberRequestDto
-    ) {
-        memberService.createMember(memberRequestDto);
-        return ApiResponse.success(Status.OK.getCode(), Status.OK.getMessage(), null);
+    @PostMapping("/test")
+    @Operation(summary = "test")
+    public ApiResponse<?> test() {
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), null);
     }
 
 }
