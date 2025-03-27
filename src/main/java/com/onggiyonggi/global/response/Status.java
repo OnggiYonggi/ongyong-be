@@ -28,6 +28,10 @@ public enum Status {
     JWT_EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "JWT400", "JWT가 만료되었습니다."),
     JWT_NULL(HttpStatus.UNAUTHORIZED, "JWT401", "JWT가 NULL입니다."),
     JWT_INVALID(HttpStatus.FORBIDDEN, "JWT403", "JWT가 유효하지 않습니다."),
+
+    //가게 관련 오류
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE404", "가게가 존재하지 않습니다."),
+
     ;
 
     private final HttpStatus httpStatus;

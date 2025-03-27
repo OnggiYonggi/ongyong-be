@@ -2,12 +2,15 @@ package com.onggiyonggi.domain.store.controller;
 
 import com.onggiyonggi.domain.store.domain.StoreRank;
 import com.onggiyonggi.domain.store.dto.request.StoreRequestDto;
+import com.onggiyonggi.domain.store.dto.response.StoreResponseDto;
 import com.onggiyonggi.domain.store.service.StoreService;
 import com.onggiyonggi.global.response.ApiResponse;
 import com.onggiyonggi.global.response.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +34,15 @@ public class StoreController {
         Long id = storeService.createStore(requestDto, storeRank);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), id);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "가게 상세 조회 API", description = "가게의 id 값으로 상세정보를 조회할 수 있는 API입니다.<br>"
+        + "")
+    public ApiResponse<?> getStoreDetail(@PathVariable Long id) {
+        StoreResponseDto responseDto = storeService.getStoreDetail(id);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
     }
 
     // 현재 위치로 가게 리스트 조회
