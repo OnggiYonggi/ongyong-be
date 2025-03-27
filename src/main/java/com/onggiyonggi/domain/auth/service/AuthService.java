@@ -3,6 +3,7 @@ package com.onggiyonggi.domain.auth.service;
 import com.onggiyonggi.domain.auth.domain.Token;
 import com.onggiyonggi.domain.auth.dto.request.LoginRequestDto;
 import com.onggiyonggi.domain.auth.dto.request.MemberRequestDto;
+import com.onggiyonggi.domain.auth.dto.response.IdExistenceResponseDto;
 import com.onggiyonggi.domain.auth.dto.response.JwtResponseDto;
 import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.member.domain.Role;
@@ -42,6 +43,13 @@ public class AuthService {
         return JwtResponseDto.builder()
             .accessToken(token.getAccessToken())
             .refreshToken(token.getRefreshToken())
+            .build();
+    }
+
+    public IdExistenceResponseDto checkId(String id) {
+        Boolean isExist = memberService.checkExistencesById(id);
+        return IdExistenceResponseDto.builder()
+            .isExist(isExist)
             .build();
     }
 
