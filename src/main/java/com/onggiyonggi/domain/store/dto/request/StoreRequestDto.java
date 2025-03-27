@@ -49,12 +49,6 @@ public class StoreRequestDto {
     @Schema(description = "이름", example = "엽기떡볶이 광교경기대점")
     private String name;
 
-    @NotNull
-    @NotEmpty
-    @NotBlank
-    @Schema(description = "랭킹", example = "BRONZE")
-    private StoreRank storeRank;
-
     @Schema(description = "영업시간", example = "")
     private String businessHours;
 

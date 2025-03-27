@@ -58,9 +58,12 @@ public class Store {
             .longitude(requestDto.getLongitude())
             .address(requestDto.getAddress())
             .name(requestDto.getName())
-            .storeRank(requestDto.getStoreRank())
             .businessHours(requestDto.getBusinessHours())
             .build();
+    }
+
+    public void updateStoreRank(StoreRank storeRank) {
+        this.storeRank = storeRank;
     }
 
 }
