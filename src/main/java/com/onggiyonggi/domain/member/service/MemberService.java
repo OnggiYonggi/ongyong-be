@@ -22,6 +22,10 @@ public class MemberService {
         return findMemberById(id);
     }
 
+    public Boolean checkExistencesById(String id) {
+        return existsById(id);
+    }
+
     private void save(Member member) {
         memberRepository.save(member);
     }
@@ -29,6 +33,10 @@ public class MemberService {
     private Member findMemberById(String id) {
         return memberRepository.findById(id)
             .orElseThrow(() -> new GeneralException(Status.MEMBER_NOT_FOUND));
+    }
+
+    private Boolean existsById(String id) {
+        return memberRepository.existsById(id);
     }
 
 }

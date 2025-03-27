@@ -1,6 +1,7 @@
 package com.onggiyonggi.domain.auth.controller;
 
 import com.onggiyonggi.domain.auth.dto.request.LoginRequestDto;
+import com.onggiyonggi.domain.auth.dto.response.IdExistenceResponseDto;
 import com.onggiyonggi.domain.auth.dto.response.JwtResponseDto;
 import com.onggiyonggi.domain.auth.service.AuthService;
 import com.onggiyonggi.domain.auth.dto.request.MemberRequestDto;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -56,4 +58,13 @@ public class AuthController {
             Status.OK.getMessage(), result);
     }
 
+    @GetMapping("/check-id")
+    @Operation(summary = "아이디 중복확인 API", description = "아이디 중복 여부를 확인하는 API.")
+    public ApiResponse<IdExistenceResponseDto> checkId(
+        @RequestParam("id") String id
+    ) {
+        IdExistenceResponseDto responseDto = authService.checkId(id);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
+    }
 }
