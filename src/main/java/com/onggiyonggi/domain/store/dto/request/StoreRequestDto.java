@@ -20,20 +20,14 @@ import lombok.Setter;
 public class StoreRequestDto {
 
     @NotNull
-    @NotEmpty
-    @NotBlank
     @Schema(description = "가게 타입", example = "FOOD")
     private StoreType storeType;
 
     @NotNull
-    @NotEmpty
-    @NotBlank
     @Schema(description = "위도", example = "37.299742")
     private Double latitude;
 
     @NotNull
-    @NotEmpty
-    @NotBlank
     @Schema(description = "경도", example = "127.044380")
     private Double longitude;
 

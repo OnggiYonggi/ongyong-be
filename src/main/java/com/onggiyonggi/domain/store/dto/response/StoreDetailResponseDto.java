@@ -10,7 +10,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class StoreResponseDto {
+public class StoreDetailResponseDto {
 
     private Long id;
     private StoreType storeType;
@@ -22,8 +22,8 @@ public class StoreResponseDto {
     private String businessHours;
     // 리뷰 리스트 여기에 포함할 지 고민.
 
-    public static StoreResponseDto toDto(Store store) {
-        return StoreResponseDto.builder()
+    public static StoreDetailResponseDto toDto(Store store) {
+        return StoreDetailResponseDto.builder()
             .id(store.getId())
             .storeType(store.getStoreType())
             .latitude(store.getLatitude())
