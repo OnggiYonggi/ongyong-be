@@ -1,5 +1,6 @@
 package com.onggiyonggi.domain.store.domain;
 
+import com.onggiyonggi.domain.store.dto.request.StoreRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,12 +33,13 @@ public class Store {
 
     @Range(min = -90, max = 90)
     @Column(nullable = false)
-    private Double latitude;
+    private Double latitude; // 위도
 
     @Range(min = -180, max = 180)
     @Column(nullable = false)
-    private Double longitude;
+    private Double longitude; // 경도
 
+    @NotNull
     private String address;
 
     @Column(nullable = false)
@@ -48,5 +50,20 @@ public class Store {
     private StoreRank storeRank;
 
     private String businessHours;
+
+    public static Store toEntity(StoreRequestDto requestDto) {
+        return Store.builder()
+            .storeType(requestDto.getStoreType())
+            .latitude(requestDto.getLatitude())
+            .longitude(requestDto.getLongitude())
+            .address(requestDto.getAddress())
+            .name(requestDto.getName())
+            .businessHours(requestDto.getBusinessHours())
+            .build();
+    }
+
+    public void updateStoreRank(StoreRank storeRank) {
+        this.storeRank = storeRank;
+    }
 
 }
