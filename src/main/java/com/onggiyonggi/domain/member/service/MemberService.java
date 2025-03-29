@@ -26,6 +26,10 @@ public class MemberService {
         return existsById(id);
     }
 
+    public Boolean checkExistencesByNickName(String nickname) {
+        return existsByNickName(nickname);
+    }
+
     private void save(Member member) {
         memberRepository.save(member);
     }
@@ -35,8 +39,17 @@ public class MemberService {
             .orElseThrow(() -> new GeneralException(Status.MEMBER_NOT_FOUND));
     }
 
+    private Member findMemberByNickName(String nickname) {
+        return memberRepository.findByNickName(nickname)
+                .orElseThrow(() -> new GeneralException(Status.MEMBER_NOT_FOUND));
+    }
+
     private Boolean existsById(String id) {
         return memberRepository.existsById(id);
+    }
+
+    private Boolean existsByNickName(String nickname) {
+        return memberRepository.existsByNickName(nickname);
     }
 
 }

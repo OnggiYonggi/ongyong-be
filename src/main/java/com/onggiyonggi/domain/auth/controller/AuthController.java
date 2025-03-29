@@ -3,6 +3,7 @@ package com.onggiyonggi.domain.auth.controller;
 import com.onggiyonggi.domain.auth.dto.request.LoginRequestDto;
 import com.onggiyonggi.domain.auth.dto.response.IdExistenceResponseDto;
 import com.onggiyonggi.domain.auth.dto.response.JwtResponseDto;
+import com.onggiyonggi.domain.auth.dto.response.NickNameExistenceResponseDto;
 import com.onggiyonggi.domain.auth.service.AuthService;
 import com.onggiyonggi.domain.auth.dto.request.MemberRequestDto;
 import com.onggiyonggi.domain.member.domain.Member;
@@ -66,5 +67,15 @@ public class AuthController {
         IdExistenceResponseDto responseDto = authService.checkId(id);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);
+    }
+
+    @GetMapping("/check-nickname")
+    @Operation(summary = "닉네임 중복확인 API", description = "닉네임 중복 여부를 확인하는 API.")
+    public ApiResponse<NickNameExistenceResponseDto> checkNickName(
+            @RequestParam("nickname") String nickname
+    ) {
+        NickNameExistenceResponseDto responseDto = authService.checkNickName(nickname);
+        return ApiResponse.success(Status.OK.getCode(),
+                Status.OK.getMessage(), responseDto);
     }
 }
