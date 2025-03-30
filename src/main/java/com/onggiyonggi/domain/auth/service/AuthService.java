@@ -5,6 +5,7 @@ import com.onggiyonggi.domain.auth.dto.request.LoginRequestDto;
 import com.onggiyonggi.domain.auth.dto.request.MemberRequestDto;
 import com.onggiyonggi.domain.auth.dto.response.IdExistenceResponseDto;
 import com.onggiyonggi.domain.auth.dto.response.JwtResponseDto;
+import com.onggiyonggi.domain.auth.dto.response.NickNameExistenceResponseDto;
 import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.member.domain.Role;
 import com.onggiyonggi.domain.member.service.MemberService;
@@ -51,6 +52,13 @@ public class AuthService {
         return IdExistenceResponseDto.builder()
             .isExist(isExist)
             .build();
+    }
+
+    public NickNameExistenceResponseDto checkNickName(String nickname) {
+        Boolean isExist = memberService.checkExistencesByNickName(nickname);
+        return NickNameExistenceResponseDto.builder()
+                .isExist(isExist)
+                .build();
     }
 
     public Member getCurrentMember() {
