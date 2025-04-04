@@ -1,6 +1,7 @@
 package com.onggiyonggi.domain.review.controller;
 
 import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
+import com.onggiyonggi.domain.review.dto.response.ReviewPreviewResponseDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
 import com.onggiyonggi.domain.review.service.ReviewService;
 import com.onggiyonggi.domain.store.domain.StoreRank;
@@ -12,6 +13,7 @@ import com.onggiyonggi.global.response.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +44,14 @@ public class ReviewController {
     @Operation(summary = "리뷰 상세 조회 API", description = "리뷰의 id 값으로 상세정보를 조회할 수 있는 API입니다")
     public ApiResponse<ReviewResponseDto> getReviewDetial(@PathVariable Long id) {
         ReviewResponseDto responseDto = reviewService.getReviewDetail(id);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
+    }
+
+    @GetMapping("/my")
+    @Operation(summary = "내가 작성한 리뷰 리스트 조회 API", description = "내가 작성한 리뷰들의 미리보기를 조회할 수 있는 API입니다")
+    public ApiResponse<List<ReviewPreviewResponseDto>> getMyReviewPreview(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        List<ReviewPreviewResponseDto> responseDto = reviewService.getMyReviewPreview(customUserDetails);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);
     }

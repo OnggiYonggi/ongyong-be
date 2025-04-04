@@ -3,6 +3,7 @@ package com.onggiyonggi.domain.review.service;
 import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.review.domain.Review;
 import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
+import com.onggiyonggi.domain.review.dto.response.ReviewPreviewResponseDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
 import com.onggiyonggi.domain.review.repository.ReviewRepository;
 import com.onggiyonggi.domain.store.domain.Store;
@@ -10,6 +11,8 @@ import com.onggiyonggi.domain.store.service.StoreService;
 import com.onggiyonggi.global.auth.CustomUserDetails;
 import com.onggiyonggi.global.response.GeneralException;
 import com.onggiyonggi.global.response.Status;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,13 @@ public class ReviewService {
         return ReviewResponseDto.toDto(review);
     }
 
+    public List<ReviewPreviewResponseDto> getMyReviewPreview(CustomUserDetails customUserDetails) {
+        Member member = customUserDetails.getMember();
+        return getReviewListByMemberId(member.getId()).stream()
+            .map(ReviewPreviewResponseDto::from)
+            .collect(Collectors.toList());
+    }
+
     private Review save(Review review) {
         return reviewRepository.save(review);
     }
@@ -42,6 +52,10 @@ public class ReviewService {
     private Review getReviewById(Long id) {
         return reviewRepository.findById(id)
             .orElseThrow(() -> new GeneralException(Status.REVIEW_NOT_FOUND));
+    }
+
+    private List<Review> getReviewListByMemberId(String memberId) {
+        return reviewRepository.findAllByMemberId(memberId);
     }
 
 }
