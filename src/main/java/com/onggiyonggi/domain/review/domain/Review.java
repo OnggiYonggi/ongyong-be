@@ -1,7 +1,9 @@
 package com.onggiyonggi.domain.review.domain;
 
 import com.onggiyonggi.domain.member.domain.Member;
+import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
 import com.onggiyonggi.domain.store.domain.Store;
+import com.onggiyonggi.domain.store.dto.request.StoreRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -56,5 +58,24 @@ public class Review {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private FoodTaste foodTaste;
+
+    public static Review toEntity(ReviewRequestDto requestDto) {
+        return Review.builder()
+            .imageURL(requestDto.getImageURL())
+            .content(requestDto.getContent())
+            .reusableContainerType(requestDto.getReusableContainerType())
+            .reusableContainerSize(requestDto.getReusableContainerSize())
+            .fillLevel(requestDto.getFillLevel())
+            .foodTaste(requestDto.getFoodTaste())
+            .build();
+    }
+
+    public void updateMember(Member member) {
+        this.member = member;
+    }
+
+    public void updateStore(Store store) {
+        this.store = store;
+    }
 
 }

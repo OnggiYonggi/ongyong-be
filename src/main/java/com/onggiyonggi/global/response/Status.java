@@ -32,6 +32,8 @@ public enum Status {
     //가게 관련 오류
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE404", "가게가 존재하지 않습니다."),
 
+    //리뷰 관련 오류
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE404", "리뷰가 존재하지 않습니다.")
     ;
 
     private final HttpStatus httpStatus;
