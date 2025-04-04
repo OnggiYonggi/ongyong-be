@@ -37,6 +37,10 @@ public class StoreService {
             .toList();
     }
 
+    public Store getStore(Long id) {
+        return getStoreById(id);
+    }
+
     private Store save(Store store) {
         return storeRepository.save(store);
     }
