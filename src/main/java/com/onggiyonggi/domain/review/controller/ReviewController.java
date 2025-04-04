@@ -1,9 +1,11 @@
 package com.onggiyonggi.domain.review.controller;
 
 import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
+import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
 import com.onggiyonggi.domain.review.service.ReviewService;
 import com.onggiyonggi.domain.store.domain.StoreRank;
 import com.onggiyonggi.domain.store.dto.request.StoreRequestDto;
+import com.onggiyonggi.domain.store.dto.response.StoreDetailResponseDto;
 import com.onggiyonggi.global.auth.CustomUserDetails;
 import com.onggiyonggi.global.response.ApiResponse;
 import com.onggiyonggi.global.response.Status;
@@ -12,6 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +36,14 @@ public class ReviewController {
         Long id = reviewService.createReview(requestDto, customUserDetails);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), id);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "리뷰 상세 조회 API", description = "리뷰의 id 값으로 상세정보를 조회할 수 있는 API입니다")
+    public ApiResponse<ReviewResponseDto> getReviewDetial(@PathVariable Long id) {
+        ReviewResponseDto responseDto = reviewService.getReviewDetail(id);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
     }
 
 }
