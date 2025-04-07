@@ -1,6 +1,7 @@
 package com.onggiyonggi.domain.member.domain;
 
 import com.onggiyonggi.domain.auth.dto.request.MemberRequestDto;
+import com.onggiyonggi.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @Column(name = "id", updatable = false)

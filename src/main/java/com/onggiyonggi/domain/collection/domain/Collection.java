@@ -2,6 +2,7 @@ package com.onggiyonggi.domain.collection.domain;
 
 import com.onggiyonggi.domain.character.domain.NaturalMonumentCharacter;
 import com.onggiyonggi.domain.member.domain.Member;
+import com.onggiyonggi.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Collection {
+public class Collection extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

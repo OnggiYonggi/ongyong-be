@@ -2,6 +2,7 @@ package com.onggiyonggi.domain.pet.domain;
 
 import com.onggiyonggi.domain.character.domain.NaturalMonumentCharacter;
 import com.onggiyonggi.domain.member.domain.Member;
+import com.onggiyonggi.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +22,7 @@ import org.hibernate.validator.constraints.Range;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pet {
+public class Pet extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
