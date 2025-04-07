@@ -4,6 +4,7 @@ import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
 import com.onggiyonggi.domain.store.domain.Store;
 import com.onggiyonggi.domain.store.dto.request.StoreRequestDto;
+import com.onggiyonggi.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,7 @@
 package com.onggiyonggi.domain.store.domain;
 
 import com.onggiyonggi.domain.store.dto.request.StoreRequestDto;
+import com.onggiyonggi.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,7 +21,7 @@ import org.hibernate.validator.constraints.Range;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Store {
+public class Store extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
