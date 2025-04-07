@@ -35,9 +35,9 @@ public class Item extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private Integer price;
+    private Long price;
 
     @Column(nullable = false)
-    private Integer count;
+    private Long count;
 
 }
