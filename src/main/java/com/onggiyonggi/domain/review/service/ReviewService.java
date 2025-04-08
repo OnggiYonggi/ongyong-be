@@ -45,6 +45,14 @@ public class ReviewService {
             .collect(Collectors.toList());
     }
 
+    public Review getReviewEntityById(Long id) {
+        return getReviewById(id);
+    }
+
+    public Review saveReviewEntity(Review review){
+        return save(review);
+    }
+
     private Review save(Review review) {
         return reviewRepository.save(review);
     }

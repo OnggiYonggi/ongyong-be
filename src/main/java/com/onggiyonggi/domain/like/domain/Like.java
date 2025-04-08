@@ -36,4 +36,11 @@ public class Like {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    public static Like createEntity(Review review, Member member) {
+        return Like.builder()
+            .review(review)
+            .member(member)
+            .build();
+    }
+
 }
