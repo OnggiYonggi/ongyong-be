@@ -42,8 +42,8 @@ public class ReviewController {
 
     @GetMapping("/{id}")
     @Operation(summary = "리뷰 상세 조회 API", description = "리뷰의 id 값으로 상세정보를 조회할 수 있는 API입니다")
-    public ApiResponse<ReviewResponseDto> getReviewDetial(@PathVariable Long id) {
-        ReviewResponseDto responseDto = reviewService.getReviewDetail(id);
+    public ApiResponse<ReviewResponseDto> getReviewDetial(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        ReviewResponseDto responseDto = reviewService.getReviewDetail(id, customUserDetails);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);
     }

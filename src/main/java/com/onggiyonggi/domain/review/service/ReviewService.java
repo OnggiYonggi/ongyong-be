@@ -1,10 +1,12 @@
 package com.onggiyonggi.domain.review.service;
 
+import com.onggiyonggi.domain.like.service.LikeService;
 import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.review.domain.Review;
 import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewPreviewResponseDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
+import com.onggiyonggi.domain.review.facade.ReviewLikeFacade;
 import com.onggiyonggi.domain.review.repository.ReviewRepository;
 import com.onggiyonggi.domain.store.domain.Store;
 import com.onggiyonggi.domain.store.service.StoreService;
@@ -22,6 +24,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final StoreService storeService;
+    private final LikeService likeService;
 
     public Long createReview(ReviewRequestDto requestDto, CustomUserDetails customUserDetails) {
         Review review = Review.toEntity(requestDto);
@@ -33,9 +36,13 @@ public class ReviewService {
         return save(review).getId();
     }
 
-    public ReviewResponseDto getReviewDetail(Long id) {
+    public ReviewResponseDto getReviewDetail(Long id, CustomUserDetails customUserDetails) {
         Review review = getReviewById(id);
-        return ReviewResponseDto.toDto(review);
+        Member member = customUserDetails.getMember();
+        ReviewResponseDto responseDto = ReviewResponseDto.toDto(review);
+        Boolean hasLikeByMe = likeService.isExistByReviewIdAndMemberId(id, member.getId());
+        responseDto.setHasLikeByMe(hasLikeByMe);
+        return responseDto;
     }
 
     public List<ReviewPreviewResponseDto> getMyReviewPreview(CustomUserDetails customUserDetails) {

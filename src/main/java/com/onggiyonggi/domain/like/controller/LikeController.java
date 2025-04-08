@@ -2,6 +2,7 @@ package com.onggiyonggi.domain.like.controller;
 
 import com.onggiyonggi.domain.like.dto.response.LikeToggleResponseDto;
 import com.onggiyonggi.domain.like.service.LikeService;
+import com.onggiyonggi.domain.review.facade.ReviewLikeFacade;
 import com.onggiyonggi.global.auth.CustomUserDetails;
 import com.onggiyonggi.global.response.ApiResponse;
 import com.onggiyonggi.global.response.Status;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LikeController {
 
     private final LikeService likeService;
+    private final ReviewLikeFacade reviewLikeFacade;
 
     @Operation(summary = "[U] 리뷰 좋아요 누르기/취소하기", description = "내부적으로 좋아요가 눌러져 있으면 취소를 하고 눌러져 있지 않으면 누르게 동작합니다.")
     @PostMapping("/likes/{reviewId}")
@@ -28,7 +30,7 @@ public class LikeController {
         @PathVariable(name = "reviewId") Long reviewId,
         @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        LikeToggleResponseDto responseDto = likeService.toggleLikeStatus(reviewId, customUserDetails);
+        LikeToggleResponseDto responseDto = reviewLikeFacade.toggleLikeStatus(reviewId, customUserDetails);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);
     }

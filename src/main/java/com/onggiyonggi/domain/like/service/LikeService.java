@@ -7,6 +7,8 @@ import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.review.domain.Review;
 import com.onggiyonggi.domain.review.service.ReviewService;
 import com.onggiyonggi.global.auth.CustomUserDetails;
+import com.onggiyonggi.global.response.GeneralException;
+import com.onggiyonggi.global.response.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,36 +17,22 @@ import org.springframework.stereotype.Service;
 public class LikeService {
 
     private final LikeRepository likeRepository;
-    private final ReviewService reviewService;
 
-    public LikeToggleResponseDto toggleLikeStatus(Long reviewId, CustomUserDetails customUserDetails) {
-        Member member = customUserDetails.getMember();
-        Review review = reviewService.getReviewEntityById(reviewId);
+    public Like getByReviewIdAndMemberId(Long reviewId, String memberId) {
+        return likeRepository.findByReviewIdAndMemberId(reviewId, memberId)
+            .orElseThrow(() -> new GeneralException(Status.LIKE_NOT_FOUND));
+    }
 
-        return likeRepository.findByReviewIdAndMemberId(reviewId, member.getId())
-            .map(like -> {
-                likeRepository.delete(like);
-                review.decreaseLike();
-                reviewService.saveReviewEntity(review);
-                return LikeToggleResponseDto.builder()
-                    .likes(review.getLikes())
-                    .reviewId(reviewId)
-                    .build();
-            })
-            .orElseGet(() -> {
-                Like like = Like.createEntity(review, member);
-                saveLike(like);
-                review.increaseLike();
-                reviewService.saveReviewEntity(review);
-                return LikeToggleResponseDto.builder()
-                    .likes(review.getLikes())
-                    .reviewId(reviewId)
-                    .build();
-            });
+    public Boolean isExistByReviewIdAndMemberId(Long reviewId, String memberId) {
+        return likeRepository.existsByReviewIdAndMemberId(reviewId, memberId);
     }
 
     public Like saveLikeEntity(Like like) {
         return saveLike(like);
+    }
+
+    public void deleteLikeEntity(Like like) {
+        likeRepository.delete(like);
     }
 
     private Like saveLike(Like like) {
