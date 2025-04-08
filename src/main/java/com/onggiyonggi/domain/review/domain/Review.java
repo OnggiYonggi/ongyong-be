@@ -60,6 +60,9 @@ public class Review extends BaseEntity {
     @Column(nullable = false)
     private FoodTaste foodTaste;
 
+    @Column(nullable = false)
+    private Long likes;
+
     public static Review toEntity(ReviewRequestDto requestDto) {
         return Review.builder()
             .imageURL(requestDto.getImageURL())
@@ -68,6 +71,7 @@ public class Review extends BaseEntity {
             .reusableContainerSize(requestDto.getReusableContainerSize())
             .fillLevel(requestDto.getFillLevel())
             .foodTaste(requestDto.getFoodTaste())
+            .likes(0L)
             .build();
     }
 
@@ -77,6 +81,16 @@ public class Review extends BaseEntity {
 
     public void updateStore(Store store) {
         this.store = store;
+    }
+
+    public void increaseLike() {
+        this.likes++;
+    }
+
+    public void decreaseLike() {
+        if (likes > 0) {
+            this.likes--;
+        }
     }
 
 }

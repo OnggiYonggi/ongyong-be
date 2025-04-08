@@ -24,6 +24,8 @@ public class ReviewResponseDto {
     private ReusableContainerSize reusableContainerSize;
     private FillLevel fillLevel;
     private FoodTaste foodTaste;
+    private Long likes;
+    private Boolean hasLikeByMe;
 
     public static ReviewResponseDto toDto(Review review) {
         return ReviewResponseDto.builder()
@@ -35,6 +37,7 @@ public class ReviewResponseDto {
             .reusableContainerSize(review.getReusableContainerSize())
             .fillLevel(review.getFillLevel())
             .foodTaste(review.getFoodTaste())
+            .likes(review.getLikes())
             .build();
     }
 
