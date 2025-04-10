@@ -36,7 +36,10 @@ public enum Status {
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE404", "리뷰가 존재하지 않습니다."),
 
     //좋아요 관련 오류
-    LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "LIKE404", "좋아요가 존재하지 않습니다.")
+    LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "LIKE404", "좋아요가 존재하지 않습니다."),
+
+    //펫 관련 오류
+    PET_NOT_FOUND(HttpStatus.NOT_FOUND, "PET404", "펫이 존재하지 않습니다."),
 
     ;
     private final HttpStatus httpStatus;
