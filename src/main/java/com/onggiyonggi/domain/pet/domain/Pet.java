@@ -41,4 +41,12 @@ public class Pet extends BaseEntity {
     @Column(nullable = false)
     private Float affinity = 0f;
 
+    public static Pet create(Member member, NaturalMonumentCharacter naturalMonumentCharacter) {
+        return Pet.builder()
+            .member(member)
+            .naturalMonumentCharacter(naturalMonumentCharacter)
+            .affinity(0f)
+            .build();
+    }
+
 }

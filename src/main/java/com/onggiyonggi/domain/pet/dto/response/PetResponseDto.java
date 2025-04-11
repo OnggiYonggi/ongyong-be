@@ -9,14 +9,14 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class MyPetResponseDto {
+public class PetResponseDto {
 
     private Long id;
     private NaturalMonumentCharacter naturalMonumentCharacter;
     private Float affinity;
 
-    public static MyPetResponseDto toDto(Pet pet) {
-        return MyPetResponseDto.builder()
+    public static PetResponseDto toDto(Pet pet) {
+        return PetResponseDto.builder()
             .id(pet.getId())
             .naturalMonumentCharacter(pet.getNaturalMonumentCharacter())
             .affinity(pet.getAffinity())
