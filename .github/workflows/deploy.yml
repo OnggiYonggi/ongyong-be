@@ -22,7 +22,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: 🏗️ Build Spring Boot
-        run: ./gradlew build --no-daemon
+        run: ./gradlew build -Dspring.profiles.active=prod --no-daemon
 
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
