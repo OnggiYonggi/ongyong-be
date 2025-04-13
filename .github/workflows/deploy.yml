@@ -21,7 +21,13 @@ jobs:
       - name: ✅ Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: 🏗️ Build Spring Boot
+      - name: ✨ Generate .env.prod file from secret
+        run: |
+          echo "${{ secrets.ENV_PROD_CONTENT }}" > .env.prod
+          export $(cat .env.prod | grep -v '^#' | xargs)
+          chmod +x ./gradlew
+
+      - name: 🏗️ Build Spring Boot with prod profile and .env
         run: ./gradlew build -Dspring.profiles.active=prod --no-daemon
 
       - name: 🐳 Log in to NCP Container Registry
