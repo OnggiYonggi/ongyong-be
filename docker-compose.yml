@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  springboot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: springboot
+    ports:
+      - "9000:9000"
+    networks:
+      - backend
+    restart: always
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - springboot
+    networks:
+      - backend
+    restart: always
+
+networks:
+  backend:
+    driver: bridge
