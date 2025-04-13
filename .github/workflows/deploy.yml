@@ -18,6 +18,9 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: ✅ Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: 🏗️ Build Spring Boot
         run: ./gradlew build --no-daemon
 
