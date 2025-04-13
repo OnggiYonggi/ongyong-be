@@ -18,6 +18,15 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: 📝 Create .env.prod from secrets
+        run: echo "${{ secrets.ENV_PROD_CONTENT }}" > .env.prod
+
+      - name: 📦 Export .env.prod for build
+        run: |
+          set -o allexport
+          source .env.prod
+          set +o allexport
+
       - name: ✅ Make gradlew executable
         run: chmod +x ./gradlew
 
