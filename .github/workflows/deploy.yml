@@ -42,6 +42,15 @@ jobs:
           docker build -t $IMAGE .
           docker push $IMAGE
 
+      - name: 📦 Upload .env.prod to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.NCP_HOST }}
+          username: ${{ secrets.NCP_USERNAME }}
+          key: ${{ secrets.NCP_KEY }}
+          source: ".env.prod"
+          target: "/server/.env.prod"
+
       - name: 🔐 Deploy to NCP Server via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
