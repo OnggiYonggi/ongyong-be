@@ -1,4 +1,4 @@
-FROM openjdk:21
+FROM openjdk:21-jdk-slim
 RUN apt-get update && apt-get install -y ca-certificates
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
