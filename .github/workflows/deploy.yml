@@ -2,7 +2,9 @@ name: Deploy SpringBoot with Docker to NCP
 
 on:
   push:
-    branches: [ feat/#33 ]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   deploy:
