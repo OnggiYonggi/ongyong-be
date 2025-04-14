@@ -62,4 +62,4 @@ jobs:
             docker pull ${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
             cd /server
             docker compose down
-            docker compose up -d
+            docker compose up -d --force-recreate --remove-orphans
