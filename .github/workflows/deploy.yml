@@ -2,7 +2,7 @@ name: Deploy SpringBoot with Docker to NCP
 
 on:
   push:
-    branches: [ bug/#44 ]
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -11,11 +11,6 @@ jobs:
     steps:
       - name: ✅ Checkout Repository
         uses: actions/checkout@v3
-
-      - name: ✅ Switch to main branch explicitly
-        run: |
-          git fetch origin bug/#44
-          git checkout bug/#44
 
       - name: 🧱 Set up JDK
         uses: actions/setup-java@v3
