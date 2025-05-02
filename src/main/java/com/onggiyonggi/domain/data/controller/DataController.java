@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/data")
 @RequiredArgsConstructor
+@RequestMapping("/data")
 @Tag(name = "Data", description = "적재 api")
 public class DataController {
 

@@ -58,7 +58,7 @@ jobs:
       - name: 📦 Build & Push Docker Image
         run: |
           IMAGE=${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
-          docker build -t $IMAGE .
+          docker build --no-cache -t $IMAGE .
           docker push $IMAGE
 
       - name: 📦 Upload .env.prod to server
@@ -78,7 +78,8 @@ jobs:
           key: ${{ secrets.NCP_KEY }}
           script: |
             docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} -p ${{ secrets.NCP_REGISTRY_PW }}
-            docker pull ${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
             cd /server
+            docker image rm ${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest || true
+            docker pull ${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
             docker compose down
             docker compose up -d --force-recreate --remove-orphans
