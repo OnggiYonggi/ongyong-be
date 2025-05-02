@@ -48,6 +48,10 @@ jobs:
       - name: 🏗️ Build Spring Boot with prod profile and .env
         run: ./gradlew build -x test -Dspring.profiles.active=prod --no-daemon
 
+      - name: 🧪 Check if DataController is in JAR
+        run: |
+          unzip -l build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar | grep DataController
+
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
 
