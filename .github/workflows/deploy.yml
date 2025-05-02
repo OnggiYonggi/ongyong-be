@@ -62,6 +62,7 @@ jobs:
       - name: 📦 Build & Push Docker Image
         run: |
           IMAGE=${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
+          docker build -t $IMAGE .
           docker push $IMAGE
 
       - name: 📦 Upload .env.prod to server
