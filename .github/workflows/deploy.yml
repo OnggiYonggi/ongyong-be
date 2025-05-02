@@ -53,8 +53,8 @@ jobs:
       - name: Verify build artifacts
         run: ls -al build/libs
 
-      - name: 📦 Copy built JAR to root for Docker build
-        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
+      - name: 🔍 Check if built JAR exists
+        run: ls -lh build/libs/
 
       - name: 🧪 Check if DataController is in JAR
         run: |
