@@ -2,7 +2,7 @@ name: Deploy SpringBoot with Docker to NCP
 
 on:
   push:
-    branches: [ main ]
+    branches: [ bug/#44 ]
 
 jobs:
   deploy:
@@ -48,7 +48,7 @@ jobs:
           host: ${{ secrets.NCP_HOST }}
           username: ${{ secrets.NCP_USERNAME }}
           key: ${{ secrets.NCP_KEY }}
-          source: ".env.prod"
+          source: "docker-compose.yml,Dockerfile,.env.prod"
           target: "/server/"
 
       - name: 🔐 Deploy to NCP Server via SSH
