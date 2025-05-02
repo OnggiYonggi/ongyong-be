@@ -43,7 +43,7 @@ jobs:
           unzip -l build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar | grep DataStoreController
 
       - name: 📦 Copy JAR to root
-        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
+        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar ./app.jar
 
       - name: 🔍 Check if built JAR exists2
         run: ls -lh /
