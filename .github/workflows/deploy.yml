@@ -39,8 +39,9 @@ jobs:
 
       - name: 🔍 Check if DataController.java is present
         run: |
-          find . -name "*DataController.java"
-          cat src/main/java/com/onggiyonggi/domain/data/controller/DataController.java || echo "❌ DataController 없음"
+          find . -name "*DataStoreController.java"
+          cat src/main/java/com/onggiyonggi/domain/data/controller/DataStoreController.java || echo "❌ 
+          DataStoreController 없음"
 
       - name: ✅ Make gradlew executable
         run: chmod +x ./gradlew
