@@ -41,6 +41,9 @@ public enum Status {
     //펫 관련 오류
     PET_NOT_FOUND(HttpStatus.NOT_FOUND, "PET404", "펫이 존재하지 않습니다."),
 
+    //캐릭터 관련 오류
+    CHARACTER_NOT_FOUND(HttpStatus.NOT_FOUND, "CHARACTER404", "캐릭터가 존재하지 않습니다."),
+
     ;
     private final HttpStatus httpStatus;
 
