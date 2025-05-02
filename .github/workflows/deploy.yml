@@ -42,6 +42,9 @@ jobs:
         run: |
           unzip -l build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar | grep DataStoreController
 
+      - name: 📦 Copy JAR to root
+        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
+
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
 
@@ -60,9 +63,6 @@ jobs:
           key: ${{ secrets.NCP_KEY }}
           source: "docker-compose.yml,Dockerfile,.env.prod"
           target: "/server/"
-
-      - name: 📦 Copy JAR to root
-        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
 
       - name: 🔐 Deploy to NCP Server via SSH
         uses: appleboy/ssh-action@v1.0.0
