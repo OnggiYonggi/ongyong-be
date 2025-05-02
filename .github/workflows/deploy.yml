@@ -49,6 +49,10 @@ jobs:
       - name: 🏗️ Build Spring Boot with prod profile and .env
         run: ./gradlew build -x test -Dspring.profiles.active=prod --no-daemon
 
+      # 6. 빌드 결과 확인
+      - name: Verify build artifacts
+        run: ls -al build/libs
+
       - name: 📦 Copy built JAR to root for Docker build
         run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
 
@@ -56,13 +60,17 @@ jobs:
         run: |
           unzip -l build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar | grep DataStoreController
 
+      - name: 🔍 Check JAR build timestamp
+        run: ls -alh build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar
+
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
 
       - name: 📦 Build & Push Docker Image
         run: |
           IMAGE=${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
-          docker build -t $IMAGE .
+          docker builder prune -af
+          docker build --no-cache -t $IMAGE .
           docker push $IMAGE
 
       - name: 📦 Upload .env.prod to server
