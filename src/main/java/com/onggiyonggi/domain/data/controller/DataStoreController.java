@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/data")
 @Tag(name = "Data", description = "적재 api")
-public class DataController {
+public class DataStoreController {
 
     private final DataService dataService;
     private final CharacterService characterService;

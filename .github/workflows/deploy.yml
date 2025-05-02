@@ -55,6 +55,9 @@ jobs:
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
 
+      - name: 📦 Copy built JAR to root for Docker build
+        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
+
       - name: 📦 Build & Push Docker Image
         run: |
           IMAGE=${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
