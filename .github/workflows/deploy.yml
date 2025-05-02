@@ -40,7 +40,7 @@ jobs:
 
       - name: 🧪 Check if DataController is in JAR
         run: |
-          unzip -l build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar | grep DataStoreController
+          unzip -l app.jar | grep DataStoreController
 
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
