@@ -37,9 +37,6 @@ jobs:
           source .env.prod
           set +o allexport
 
-      - name: 🧼 Remove old JARs
-        run: rm -f app.jar build/libs/*.jar
-
       - name: 🔍 Check if DataController.java is present
         run: |
           find . -name "*DataStoreController.java"
@@ -49,8 +46,12 @@ jobs:
       - name: ✅ Make gradlew executable
         run: chmod +x ./gradlew
 
+      # Gradle test
+      - name: Test with Gradle
+        run: ./gradlew test
+
       - name: 🏗️ Build Spring Boot with prod profile and .env
-        run: ./gradlew build -x test -Dspring.profiles.active=prod --no-daemon
+        run: ./gradlew build -Dspring.profiles.active=prod --no-daemon
 
       - name: 📦 Copy built JAR to root for Docker build
         run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
@@ -65,8 +66,6 @@ jobs:
       - name: 📦 Build & Push Docker Image
         run: |
           IMAGE=${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
-          docker builder prune -af
-          docker build --no-cache -t $IMAGE .
           docker push $IMAGE
 
       - name: 📦 Upload .env.prod to server
