@@ -14,14 +14,6 @@ jobs:
         with:
           ref: bug/#44
 
-      - name: 📌 Check current Git branch and commit
-        run: |
-          echo "✅ 현재 브랜치 확인:"
-          git branch -vv
-
-          echo "✅ 최신 커밋 로그 확인:"
-          git log -1 --oneline
-
       - name: 🧱 Set up JDK
         uses: actions/setup-java@v3
         with:
@@ -37,21 +29,11 @@ jobs:
           source .env.prod
           set +o allexport
 
-      - name: 🔍 Check if DataController.java is present
-        run: |
-          find . -name "*DataStoreController.java"
-          cat src/main/java/com/onggiyonggi/domain/data/controller/DataStoreController.java || echo "❌ 
-          DataStoreController 없음"
-
       - name: ✅ Make gradlew executable
         run: chmod +x ./gradlew
 
       - name: 🏗️ Build Spring Boot with prod profile and .env
         run: ./gradlew build -x test -Dspring.profiles.active=prod --no-daemon
-
-      # 6. 빌드 결과 확인
-      - name: Verify build artifacts
-        run: ls -al build/libs
 
       - name: 🔍 Check if built JAR exists
         run: ls -lh build/libs/
@@ -59,9 +41,6 @@ jobs:
       - name: 🧪 Check if DataController is in JAR
         run: |
           unzip -l build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar | grep DataStoreController
-
-      - name: 🔍 Check JAR build timestamp
-        run: ls -alh build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar
 
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
