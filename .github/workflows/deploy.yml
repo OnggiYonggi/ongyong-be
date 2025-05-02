@@ -23,11 +23,6 @@ jobs:
       - name: 📝 Create .env.prod from secrets
         run: echo "${{ secrets.ENV_PROD_CONTENT }}" > .env.prod
 
-      - name: 📝 Create application-prod.yml
-        run: |
-          mkdir -p src/main/resources
-          echo "${{ secrets.APPLICATION_PROD_YML }}" > ./src/main/resources/application-prod.yml
-
       - name: 📦 Export .env.prod for build
         run: |
           set -o allexport
