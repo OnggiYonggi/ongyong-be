@@ -58,6 +58,7 @@ jobs:
       - name: 📦 Build & Push Docker Image
         run: |
           IMAGE=${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
+          docker builder prune -af
           docker build --no-cache -t $IMAGE .
           docker push $IMAGE
 
