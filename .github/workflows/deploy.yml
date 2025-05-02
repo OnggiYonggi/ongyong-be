@@ -11,6 +11,16 @@ jobs:
     steps:
       - name: ✅ Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: bug/#44
+
+      - name: 📌 Check current Git branch and commit
+        run: |
+          echo "✅ 현재 브랜치 확인:"
+          git branch -vv
+
+          echo "✅ 최신 커밋 로그 확인:"
+          git log -1 --oneline
 
       - name: 🧱 Set up JDK
         uses: actions/setup-java@v3
