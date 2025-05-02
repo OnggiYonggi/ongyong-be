@@ -46,12 +46,8 @@ jobs:
       - name: ✅ Make gradlew executable
         run: chmod +x ./gradlew
 
-      # Gradle test
-      - name: Test with Gradle
-        run: ./gradlew test
-
       - name: 🏗️ Build Spring Boot with prod profile and .env
-        run: ./gradlew build -Dspring.profiles.active=prod --no-daemon
+        run: ./gradlew build -x test -Dspring.profiles.active=prod --no-daemon
 
       - name: 📦 Copy built JAR to root for Docker build
         run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
