@@ -37,6 +37,11 @@ jobs:
           source .env.prod
           set +o allexport
 
+      - name: 🔍 Check if DataController.java is present
+        run: |
+          find . -name "*DataController.java"
+          cat src/main/java/com/onggiyonggi/domain/data/controller/DataController.java || echo "❌ DataController 없음"
+
       - name: ✅ Make gradlew executable
         run: chmod +x ./gradlew
 
