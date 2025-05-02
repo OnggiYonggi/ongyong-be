@@ -37,6 +37,9 @@ jobs:
           source .env.prod
           set +o allexport
 
+      - name: 🧼 Remove old JARs
+        run: rm -f app.jar build/libs/*.jar
+
       - name: 🔍 Check if DataController.java is present
         run: |
           find . -name "*DataStoreController.java"
@@ -49,15 +52,15 @@ jobs:
       - name: 🏗️ Build Spring Boot with prod profile and .env
         run: ./gradlew build -x test -Dspring.profiles.active=prod --no-daemon
 
+      - name: 📦 Copy built JAR to root for Docker build
+        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
+
       - name: 🧪 Check if DataController is in JAR
         run: |
           unzip -l build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar | grep DataStoreController
 
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
-
-      - name: 📦 Copy built JAR to root for Docker build
-        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar app.jar
 
       - name: 📦 Build & Push Docker Image
         run: |
