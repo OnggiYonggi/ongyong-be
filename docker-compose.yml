@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   springboot:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: onggiyonggi-registry.kr.ncr.ntruss.com/onggiyonggi:latest
     container_name: onggiyonggi-springboot
     ports:
       - "9000:9000"
