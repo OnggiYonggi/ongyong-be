@@ -11,6 +11,7 @@ import com.onggiyonggi.domain.pet.domain.Pet;
 import com.onggiyonggi.domain.pet.dto.response.PetResponseDto;
 import com.onggiyonggi.global.auth.CustomUserDetails;
 import com.onggiyonggi.global.response.GeneralException;
+import com.onggiyonggi.global.response.Status;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,10 @@ public class CollectionService {
     public Long addCollection(CustomUserDetails customUserDetails, Long characterId) {
         Member member = customUserDetails.getMember();
         NaturalMonumentCharacter character = characterService.getCharacterById(characterId);
+        Collection collection = findByMemberIdAndCharacterId(member.getId(), character.getId());
+        if (collection != null) {
+            throw new GeneralException(Status.COLLECTION_ALREADY_EXIST);
+        }
         return saveCollection(member, character).getId();
     }
 
@@ -41,6 +46,10 @@ public class CollectionService {
 
     private List<Collection> findAllByMemberId(String memberId) {
         return collectionRepository.findAllByMemberId(memberId);
+    }
+
+    private Collection findByMemberIdAndCharacterId(String memberId, Long characterId) {
+        return collectionRepository.findByMemberIdAndNaturalMonumentCharacterId(memberId, characterId);
     }
 
 }
