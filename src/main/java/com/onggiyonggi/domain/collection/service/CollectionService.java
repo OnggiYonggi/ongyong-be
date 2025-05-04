@@ -4,6 +4,7 @@ import com.onggiyonggi.domain.character.domain.NaturalMonumentCharacter;
 import com.onggiyonggi.domain.character.repository.CharacterRepository;
 import com.onggiyonggi.domain.character.service.CharacterService;
 import com.onggiyonggi.domain.collection.domain.Collection;
+import com.onggiyonggi.domain.collection.dto.responseDto.CollectionResponseDto;
 import com.onggiyonggi.domain.collection.repository.CollectionRepository;
 import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.pet.domain.Pet;
@@ -28,8 +29,18 @@ public class CollectionService {
         return saveCollection(member, character).getId();
     }
 
+    public List<CollectionResponseDto> getMyPet(CustomUserDetails customUserDetails) {
+        Member member = customUserDetails.getMember();
+        List<Collection> collections = findAllByMemberId(member.getId());
+        return collections.stream().map(collection -> CollectionResponseDto.toDto(collection)).toList();
+    }
+
     private Collection saveCollection(Member member, NaturalMonumentCharacter character) {
         return collectionRepository.save(Collection.toEntity(member, character));
+    }
+
+    private List<Collection> findAllByMemberId(String memberId) {
+        return collectionRepository.findAllByMemberId(memberId);
     }
 
 }
