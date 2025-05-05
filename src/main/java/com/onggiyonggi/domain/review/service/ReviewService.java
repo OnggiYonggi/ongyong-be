@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -75,6 +77,11 @@ public class ReviewService {
         return new CursorPageResponse<>(responseDtos, nextCursor, hasNext);
     }
 
+    public int getReviewCountByStoreId(Long storeId) {
+        log.info(countByStoreId(storeId) + "");
+        return countByStoreId(storeId);
+    }
+
     private boolean hasNextAndTrim(List<?> list, int size) {
         if (list.size() > size) {
             list.remove(list.size() - 1);
@@ -99,6 +106,10 @@ public class ReviewService {
     private List<Review> findByStoreIdAndCreatedAtLessThanOrderByCreatedAtDesc(Long storeId, LocalDateTime cursor, int size) {
         return reviewRepository.findByStoreIdAndCursor(
             storeId, cursor, PageRequest.of(0, size + 1));
+    }
+
+    private int countByStoreId(Long storeId) {
+        return reviewRepository.countByStoreId(storeId);
     }
 
 }

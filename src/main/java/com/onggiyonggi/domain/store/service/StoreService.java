@@ -9,6 +9,7 @@ import com.onggiyonggi.domain.store.dto.response.StorePreviewResponseDto;
 import com.onggiyonggi.domain.store.repository.StoreRepository;
 import com.onggiyonggi.global.response.GeneralException;
 import com.onggiyonggi.global.response.Status;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,23 @@ public class StoreService {
         return getStoreById(id);
     }
 
-    private Store save(Store store) {
+    public void saveAll(List<Store> rookieStores) {
+        saveAllStoreEntity(rookieStores);
+    }
+
+    public List<Store> getStoreListByGradeAndCreatedAtBefore(StoreRank storeRank, LocalDateTime duration) {
+        return findByGradeAndCreatedAtBefore(storeRank, duration);
+    }
+
+    private List<Store> findByGradeAndCreatedAtBefore(StoreRank storeRank, LocalDateTime duration) {
+        return storeRepository.findByRankAndCreatedAtBefore(storeRank, duration);
+    }
+
+    private void saveAllStoreEntity(List<Store> rookieStores) {
+        storeRepository.saveAll(rookieStores);
+    }
+
+        private Store save(Store store) {
         return storeRepository.save(store);
     }
 

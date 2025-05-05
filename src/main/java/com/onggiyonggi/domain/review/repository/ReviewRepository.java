@@ -27,5 +27,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
         Pageable pageable
     );
 
+    int countByStoreId(Long storeId);
 
 }
