@@ -69,13 +69,25 @@ public class ReviewService {
     }
 
     public CursorPageResponse<ReviewResponseDto> getPagedReviewsByStoreId(Long storeId, LocalDateTime cursor, int size) {
-        List<Review> reviews = findByStoreIdAndCreatedAtLessThanOrderByCreatedAtDesc(storeId, cursor, size);
+        List<Review> reviews;
+
+        if (cursor == null) {
+            reviews = findByStoreIdOrderByCreatedAtDesc(storeId, size);
+        } else {
+            reviews = findByStoreIdAndCreatedAtLessThanOrderByCreatedAtDesc(
+                storeId, cursor, size);
+        }
         Boolean hasNext = hasNextAndTrim(reviews, size);
         LocalDateTime nextCursor = reviews.isEmpty() ? null : reviews.get(reviews.size() - 1).getCreatedAt();
         List<ReviewResponseDto> responseDtos = reviews.stream()
             .map(ReviewResponseDto::toDto)
             .toList();
         return new CursorPageResponse<>(responseDtos, nextCursor, hasNext);
+    }
+
+    private List<Review> findByStoreIdOrderByCreatedAtDesc(Long storeId, int size) {
+        return reviewRepository.findByStoreIdOrderByCreatedAtDesc(
+            storeId, PageRequest.of(0, size + 1));
     }
 
     public int getReviewCountByStoreId(Long storeId) {
