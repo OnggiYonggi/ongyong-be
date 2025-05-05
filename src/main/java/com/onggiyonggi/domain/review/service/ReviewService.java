@@ -9,6 +9,7 @@ import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
 import com.onggiyonggi.domain.review.facade.ReviewLikeFacade;
 import com.onggiyonggi.domain.review.repository.ReviewRepository;
 import com.onggiyonggi.domain.store.domain.Store;
+import com.onggiyonggi.domain.store.facade.StoreReviewFacade;
 import com.onggiyonggi.domain.store.service.StoreService;
 import com.onggiyonggi.global.auth.CustomUserDetails;
 import com.onggiyonggi.global.response.CursorPageResponse;

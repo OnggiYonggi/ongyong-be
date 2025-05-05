@@ -50,6 +50,10 @@ public class StoreService {
         return findByGradeAndCreatedAtBefore(storeRank, duration);
     }
 
+    public Store saveStore(Store store) {
+        return save(store);
+    }
+
     private List<Store> findByGradeAndCreatedAtBefore(StoreRank storeRank, LocalDateTime duration) {
         return storeRepository.findByRankAndCreatedAtBefore(storeRank, duration);
     }
@@ -58,7 +62,7 @@ public class StoreService {
         storeRepository.saveAll(rookieStores);
     }
 
-        private Store save(Store store) {
+    private Store save(Store store) {
         return storeRepository.save(store);
     }
 
