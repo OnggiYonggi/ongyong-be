@@ -3,8 +3,6 @@ name: Deploy SpringBoot with Docker to NCP
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   deploy:
@@ -13,6 +11,8 @@ jobs:
     steps:
       - name: ✅ Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: main
 
       - name: 🧱 Set up JDK
         uses: actions/setup-java@v3
@@ -35,13 +35,27 @@ jobs:
       - name: 🏗️ Build Spring Boot with prod profile and .env
         run: ./gradlew build -x test -Dspring.profiles.active=prod --no-daemon
 
+      - name: 🔍 Check if built JAR exists
+        run: ls -lh build/libs/
+
+      - name: 🧪 Check if DataController is in JAR
+        run: |
+          unzip -l build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar | grep DataStoreController
+
+      - name: 📦 Copy JAR to root
+        run: cp build/libs/onggiyonggi-0.0.1-SNAPSHOT.jar ./app.jar
+
+      - name: 🔍 Check if built JAR exists2
+        run: ls -lh ./
+
       - name: 🐳 Log in to NCP Container Registry
         run: echo "${{ secrets.NCP_REGISTRY_PW }}" | docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} --password-stdin
 
       - name: 📦 Build & Push Docker Image
         run: |
           IMAGE=${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
-          docker build -t $IMAGE .
+          docker builder prune -af
+          docker build --no-cache -t $IMAGE .
           docker push $IMAGE
 
       - name: 📦 Upload .env.prod to server
@@ -50,7 +64,7 @@ jobs:
           host: ${{ secrets.NCP_HOST }}
           username: ${{ secrets.NCP_USERNAME }}
           key: ${{ secrets.NCP_KEY }}
-          source: ".env.prod"
+          source: "docker-compose.yml,Dockerfile,.env.prod"
           target: "/server/"
 
       - name: 🔐 Deploy to NCP Server via SSH
@@ -61,7 +75,8 @@ jobs:
           key: ${{ secrets.NCP_KEY }}
           script: |
             docker login ${{ secrets.NCP_REGISTRY }} -u ${{ secrets.NCP_REGISTRY_ID }} -p ${{ secrets.NCP_REGISTRY_PW }}
-            docker pull ${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
             cd /server
+            docker image rm ${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest || true
+            docker pull ${{ secrets.NCP_REGISTRY }}/onggiyonggi:latest
             docker compose down
             docker compose up -d --force-recreate --remove-orphans
