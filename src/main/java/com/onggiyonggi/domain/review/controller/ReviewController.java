@@ -7,6 +7,7 @@ import com.onggiyonggi.domain.review.service.ReviewService;
 import com.onggiyonggi.domain.store.domain.StoreRank;
 import com.onggiyonggi.domain.store.dto.request.StoreRequestDto;
 import com.onggiyonggi.domain.store.dto.response.StoreDetailResponseDto;
+import com.onggiyonggi.domain.store.facade.StoreReviewFacade;
 import com.onggiyonggi.global.auth.CustomUserDetails;
 import com.onggiyonggi.global.response.ApiResponse;
 import com.onggiyonggi.global.response.Status;
@@ -30,12 +31,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final StoreReviewFacade storeReviewFacade;
 
     @PostMapping("/")
     @Operation(summary = "리뷰 등록 API", description = "리뷰를 등록할 수 있는 API 입니다.")
     public ApiResponse<?> createReview(@RequestBody @Valid ReviewRequestDto requestDto,
         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Long id = reviewService.createReview(requestDto, customUserDetails);
+        storeReviewFacade.updateStoreRankByCondition(requestDto.getStoreId());
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), id);
     }

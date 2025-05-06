@@ -9,17 +9,25 @@ import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
 import com.onggiyonggi.domain.review.facade.ReviewLikeFacade;
 import com.onggiyonggi.domain.review.repository.ReviewRepository;
 import com.onggiyonggi.domain.store.domain.Store;
+import com.onggiyonggi.domain.store.facade.StoreReviewFacade;
 import com.onggiyonggi.domain.store.service.StoreService;
 import com.onggiyonggi.global.auth.CustomUserDetails;
+import com.onggiyonggi.global.response.CursorPageResponse;
 import com.onggiyonggi.global.response.GeneralException;
 import com.onggiyonggi.global.response.Status;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -60,6 +68,41 @@ public class ReviewService {
         return save(review);
     }
 
+    public CursorPageResponse<ReviewResponseDto> getPagedReviewsByStoreId(Long storeId, LocalDateTime cursor, int size) {
+        List<Review> reviews;
+
+        if (cursor == null) {
+            reviews = findByStoreIdOrderByCreatedAtDesc(storeId, size);
+        } else {
+            reviews = findByStoreIdAndCreatedAtLessThanOrderByCreatedAtDesc(
+                storeId, cursor, size);
+        }
+        Boolean hasNext = hasNextAndTrim(reviews, size);
+        LocalDateTime nextCursor = reviews.isEmpty() ? null : reviews.get(reviews.size() - 1).getCreatedAt();
+        List<ReviewResponseDto> responseDtos = reviews.stream()
+            .map(ReviewResponseDto::toDto)
+            .toList();
+        return new CursorPageResponse<>(responseDtos, nextCursor, hasNext);
+    }
+
+    private List<Review> findByStoreIdOrderByCreatedAtDesc(Long storeId, int size) {
+        return reviewRepository.findByStoreIdOrderByCreatedAtDesc(
+            storeId, PageRequest.of(0, size + 1));
+    }
+
+    public int getReviewCountByStoreId(Long storeId) {
+        log.info(countByStoreId(storeId) + "");
+        return countByStoreId(storeId);
+    }
+
+    private boolean hasNextAndTrim(List<?> list, int size) {
+        if (list.size() > size) {
+            list.remove(list.size() - 1);
+            return true;
+        }
+        return false;
+    }
+
     private Review save(Review review) {
         return reviewRepository.save(review);
     }
@@ -71,6 +114,15 @@ public class ReviewService {
 
     private List<Review> getReviewListByMemberId(String memberId) {
         return reviewRepository.findAllByMemberId(memberId);
+    }
+
+    private List<Review> findByStoreIdAndCreatedAtLessThanOrderByCreatedAtDesc(Long storeId, LocalDateTime cursor, int size) {
+        return reviewRepository.findByStoreIdAndCursor(
+            storeId, cursor, PageRequest.of(0, size + 1));
+    }
+
+    private int countByStoreId(Long storeId) {
+        return reviewRepository.countByStoreId(storeId);
     }
 
 }
