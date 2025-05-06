@@ -1,6 +1,8 @@
 package com.onggiyonggi.domain.store.repository;
 
 import com.onggiyonggi.domain.store.domain.Store;
+import com.onggiyonggi.domain.store.domain.StoreRank;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,6 +28,16 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
         @Param("lat") double latitude,
         @Param("lng") double longitude,
         @Param("radius") double radius
+    );
+
+    @Query("""
+    SELECT s FROM Store s
+    WHERE s.storeRank = :rank
+    AND s.createdAt < :createdAt
+""")
+    List<Store> findByRankAndCreatedAtBefore(
+        @Param("rank") StoreRank rank,
+        @Param("createdAt") LocalDateTime createdAt
     );
 
 }

@@ -1,16 +1,20 @@
 package com.onggiyonggi.domain.store.controller;
 
+import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
 import com.onggiyonggi.domain.store.domain.StoreRank;
 import com.onggiyonggi.domain.store.dto.request.StorePreviewRequestDto;
 import com.onggiyonggi.domain.store.dto.request.StoreRequestDto;
 import com.onggiyonggi.domain.store.dto.response.StoreDetailResponseDto;
 import com.onggiyonggi.domain.store.dto.response.StorePreviewResponseDto;
+import com.onggiyonggi.domain.store.facade.StoreReviewFacade;
 import com.onggiyonggi.domain.store.service.StoreService;
 import com.onggiyonggi.global.response.ApiResponse;
+import com.onggiyonggi.global.response.CursorPageResponse;
 import com.onggiyonggi.global.response.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StoreController {
 
     private final StoreService storeService;
+    private final StoreReviewFacade storeReviewFacade;
 
     @PostMapping("/")
     @Operation(summary = "가게 생성 API", description = "새로운 가게를 생성할 수 있는 API입니다.<br>"
@@ -59,6 +64,16 @@ public class StoreController {
         @RequestParam Integer radius
     ) {
         List<StorePreviewResponseDto> responseDto = storeService.getNearbyStore(latitude, longitude, radius);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
+    }
+
+    @GetMapping("/{storeId}/reviews")
+    public ApiResponse<CursorPageResponse<ReviewResponseDto>> getReviewsByStore(
+        @PathVariable Long storeId,
+        @RequestParam(required = false) LocalDateTime cursor,
+        @RequestParam(defaultValue = "10") int size) {
+        CursorPageResponse<ReviewResponseDto> responseDto = storeReviewFacade.getPagedReview(storeId, cursor, size);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);
     }
