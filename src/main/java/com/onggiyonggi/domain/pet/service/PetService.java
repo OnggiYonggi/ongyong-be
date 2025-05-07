@@ -42,6 +42,15 @@ public class PetService {
         return PetResponseDto.toDto(myPet);
     }
 
+    public Pet getPetByMemberId(CustomUserDetails customUserDetails) {
+        Member member = customUserDetails.getMember();
+        return  getPetByMemberId(member.getId());
+    }
+
+    public void deletePetEntity(Pet pet) {
+        deletePet(pet);
+    }
+
     public PetResponseDto updateAffinity(CustomUserDetails customUserDetails) {
         Member member = customUserDetails.getMember();
         Pet myPet = getPetByMemberId(member.getId());
@@ -57,6 +66,10 @@ public class PetService {
 
     private Pet savePet(Pet pet) {
         return petRepository.save(pet);
+    }
+
+    private void deletePet(Pet pet) {
+        petRepository.delete(pet);
     }
 
 }

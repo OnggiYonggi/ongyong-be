@@ -28,9 +28,8 @@ public class CollectionController {
     @PostMapping("/")
     @Operation(summary = "컬렉션에 펫 추가 API", description = "컬렉션에 다 성장한 펫을 저장한 API입니다.<br>")
     public ApiResponse<?> addCollection(
-        @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        Long characterId) {
-        Long id = collectionService.addCollection(customUserDetails, characterId);
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Long id = collectionService.addCollection(customUserDetails);
         return ApiResponse.success(Status.CREATED.getCode(),
             Status.CREATED.getMessage(), id);
     }
