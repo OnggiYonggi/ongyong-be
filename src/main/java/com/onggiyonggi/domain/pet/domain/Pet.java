@@ -49,4 +49,8 @@ public class Pet extends BaseEntity {
             .build();
     }
 
+    public void updateAffinity() {
+        affinity = affinity + 7 >= 100 ? 100 : affinity + 7;
+    }
+
 }
