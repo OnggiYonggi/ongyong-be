@@ -39,4 +39,13 @@ public class PetController {
             Status.OK.getMessage(), responseDto);
     }
 
+    @PostMapping("/levelup")
+    @Operation(summary = "펫 호감도 증가 API", description = "펫의 호감도가 7씩 증가하는 API입니다.<br>"
+        + "응답 dto에 affinity가 100이라면 컬렉션에 펫 추가 API를 호출해주세요.")
+    public ApiResponse<?> updateAffinity(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        PetResponseDto responseDto = petService.updateAffinity(customUserDetails);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
+    }
+
 }

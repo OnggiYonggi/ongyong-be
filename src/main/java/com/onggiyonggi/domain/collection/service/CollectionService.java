@@ -9,6 +9,7 @@ import com.onggiyonggi.domain.collection.repository.CollectionRepository;
 import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.pet.domain.Pet;
 import com.onggiyonggi.domain.pet.dto.response.PetResponseDto;
+import com.onggiyonggi.domain.pet.service.PetService;
 import com.onggiyonggi.global.auth.CustomUserDetails;
 import com.onggiyonggi.global.response.GeneralException;
 import com.onggiyonggi.global.response.Status;
@@ -23,14 +24,17 @@ public class CollectionService {
 
     private final CollectionRepository collectionRepository;
     private final CharacterService characterService;
+    private final PetService petService;
 
-    public Long addCollection(CustomUserDetails customUserDetails, Long characterId) {
+    public Long addCollection(CustomUserDetails customUserDetails) {
         Member member = customUserDetails.getMember();
-        NaturalMonumentCharacter character = characterService.getCharacterById(characterId);
+        Pet pet = petService.getPetByMemberId(customUserDetails);
+        NaturalMonumentCharacter character = characterService.getCharacterById(pet.getNaturalMonumentCharacter().getId());
         Collection collection = findByMemberIdAndCharacterId(member.getId(), character.getId());
         if (collection != null) {
             throw new GeneralException(Status.COLLECTION_ALREADY_EXIST);
         }
+        petService.deletePetEntity(pet);
         return saveCollection(member, character).getId();
     }
 
