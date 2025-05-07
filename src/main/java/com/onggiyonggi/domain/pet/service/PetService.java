@@ -42,6 +42,14 @@ public class PetService {
         return PetResponseDto.toDto(myPet);
     }
 
+    public PetResponseDto updateAffinity(CustomUserDetails customUserDetails) {
+        Member member = customUserDetails.getMember();
+        Pet myPet = getPetByMemberId(member.getId());
+        myPet.updateAffinity();
+        savePet(myPet);
+        return PetResponseDto.toDto(myPet);
+    }
+
     private Pet getPetByMemberId(String memberId) {
         return petRepository.findByMemberId(memberId)
             .orElseThrow(() -> new GeneralException(Status.PET_NOT_FOUND));
