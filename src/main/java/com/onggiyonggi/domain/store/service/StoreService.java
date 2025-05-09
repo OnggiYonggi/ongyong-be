@@ -77,4 +77,9 @@ public class StoreService {
         );
     }
 
+    public void deleteStore(Long id) {
+        Store store = getStoreById(id);
+        storeRepository.delete(store);
+    }
+
 }
