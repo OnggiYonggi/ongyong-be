@@ -25,6 +25,8 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     public void signUp(MemberRequestDto requestDto){
+        boolean isIdExist = checkId(requestDto.getId()).getIsExist();
+        boolean isNickNameExist = checkNickName(requestDto.getNickname()).getIsExist();
         Member member = Member.toEntity(requestDto, passwordEncoder);
         memberService.saveMember(member);
     }
