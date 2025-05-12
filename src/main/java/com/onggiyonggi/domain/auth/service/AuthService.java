@@ -25,6 +25,8 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     public void signUp(MemberRequestDto requestDto){
+        checkId(requestDto.getId());
+        checkNickName(requestDto.getNickname());
         Member member = Member.toEntity(requestDto, passwordEncoder);
         memberService.saveMember(member);
     }
