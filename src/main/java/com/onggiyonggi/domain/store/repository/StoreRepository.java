@@ -40,4 +40,8 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
         @Param("createdAt") LocalDateTime createdAt
     );
 
+    @Query("SELECT s FROM Store s WHERE s.name LIKE %:keyword%")
+    List<Store> findByNameContainingKeyword(@Param("keyword") String keyword);
+
+
 }
