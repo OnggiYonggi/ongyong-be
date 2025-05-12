@@ -47,6 +47,9 @@ public enum Status {
     //컬렉션 관련 오류
     COLLECTION_ALREADY_EXIST(HttpStatus.CONFLICT, "COLLECTION409", "이미 존재하는 컬렉션입니다."),
 
+    //파일 관련 오류
+    FAILED_TO_UPLOAD_FILE(HttpStatus.BAD_REQUEST, "FILE400", "파일 업로드가 실패하였습니다."),
+
     ;
     private final HttpStatus httpStatus;
 
