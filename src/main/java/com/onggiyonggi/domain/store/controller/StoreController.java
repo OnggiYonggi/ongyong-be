@@ -17,13 +17,7 @@ import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/store")
@@ -69,6 +63,7 @@ public class StoreController {
     }
 
     @GetMapping("/{storeId}/reviews")
+    @Operation(summary = "가게 아이디로 리뷰 조회", description = "가게 아이디를 통해 리뷰들을 커서 기반 페이지네이션으로 반환하는 API입니다.")
     public ApiResponse<CursorPageResponse<ReviewResponseDto>> getReviewsByStore(
         @PathVariable Long storeId,
         @RequestParam(required = false) LocalDateTime cursor,
@@ -78,5 +73,21 @@ public class StoreController {
             Status.OK.getMessage(), responseDto);
     }
 
+    @GetMapping("/search/{keyword}")
+    @Operation(summary = "키워드로 가게 조회", description = "키워드가 가게 이름에 포함된 가게들만 반환하는 API입니다.<br>"
+        + "가게 검색하기 API라고 보시면 됩니다.")
+    public ApiResponse<List<StoreDetailResponseDto>> searchStores(
+        @PathVariable String keyword) {
+        List<StoreDetailResponseDto> responseDto = storeService.searchStores(keyword);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "가게 삭제 API", description = "가게의 id 값을 받아 해당 가게를 삭제하는 API입니다.")
+    public ApiResponse<?> deleteStore(@PathVariable Long id) {
+        storeService.deleteStore(id);
+        return ApiResponse.success(Status.OK.getCode(), Status.OK.getMessage(), "삭제되었습니다.");
+    }
 
 }

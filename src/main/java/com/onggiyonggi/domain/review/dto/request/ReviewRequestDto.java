@@ -26,11 +26,11 @@ public class ReviewRequestDto {
     @Schema(description = "가게 아이디", example = "1")
     private Long storeId;
 
-    @NotNull
-    @NotEmpty
-    @NotBlank
-    @Schema(description = "이미지 경로", example = "http://~")
+    @Schema(description = "이미지 경로. 파일 업로드 API의 결과로 받은 URL을 입력", example = "http://~")
     private String imageURL;
+
+    @Schema(description = "파일 id. 파일 업로드 API의 결과로 받은 id를 입력", example = "1")
+    private Long fileId;
 
     @NotNull
     @NotEmpty

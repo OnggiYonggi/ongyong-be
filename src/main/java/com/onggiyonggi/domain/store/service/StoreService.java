@@ -38,6 +38,16 @@ public class StoreService {
             .toList();
     }
 
+    public List<StoreDetailResponseDto> searchStores(String keyword){
+        return searchStoresByKeyword(keyword).stream()
+            .map(StoreDetailResponseDto::toDto)
+            .toList();
+    }
+
+    public List<Store> searchStoresByKeyword(String keyword) {
+        return storeRepository.findByNameContainingKeyword(keyword);
+    }
+
     public Store getStore(Long id) {
         return getStoreById(id);
     }
@@ -75,6 +85,11 @@ public class StoreService {
         return storeRepository.findStoresWithinRadius(
             latitude, longitude, radius
         );
+    }
+
+    public void deleteStore(Long id) {
+        Store store = getStoreById(id);
+        storeRepository.delete(store);
     }
 
 }

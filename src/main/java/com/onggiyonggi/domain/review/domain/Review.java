@@ -63,6 +63,8 @@ public class Review extends BaseEntity {
     @Column(nullable = false)
     private Long likes;
 
+    private Long fileId;
+
     public static Review toEntity(ReviewRequestDto requestDto) {
         return Review.builder()
             .imageURL(requestDto.getImageURL())
