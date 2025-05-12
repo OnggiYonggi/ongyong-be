@@ -9,6 +9,7 @@ import com.onggiyonggi.global.response.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class FileController {
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "파일 업로드 API", description = "이미지를 전달 받아 저장하는 API입니다.")
-    public ApiResponse<?> saveFile(@RequestPart("file") MultipartFile file) {
+    public ApiResponse<?> saveFile(@RequestPart("file") MultipartFile file) throws IOException {
         FileResponseDto responseDto = fileService.saveFile(file);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);

@@ -1,5 +1,6 @@
 package com.onggiyonggi.domain.uploadedFile.dto;
 
+import com.onggiyonggi.domain.uploadedFile.domain.UploadedFile;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,9 +13,10 @@ public class FileResponseDto {
     Long id;
     String url;
 
-    public static FileResponseDto toDto(String url) {
+    public static FileResponseDto toDto(UploadedFile file) {
         return FileResponseDto.builder()
-            .url(url)
+            .id(file.getId())
+            .url(file.getUrl())
             .build();
     }
 

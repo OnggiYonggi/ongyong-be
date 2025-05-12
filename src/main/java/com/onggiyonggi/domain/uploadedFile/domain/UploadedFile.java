@@ -26,4 +26,10 @@ public class UploadedFile extends BaseEntity {
     @Column(nullable = false)
     private String url;
 
+    public static UploadedFile toEntity(String url) {
+        return UploadedFile.builder()
+            .url(url)
+            .build();
+    }
+
 }
