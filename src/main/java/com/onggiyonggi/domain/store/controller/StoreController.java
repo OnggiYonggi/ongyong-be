@@ -63,11 +63,22 @@ public class StoreController {
     }
 
     @GetMapping("/{storeId}/reviews")
+    @Operation(summary = "가게 아이디로 리뷰 조회", description = "가게 아이디를 통해 리뷰들을 커서 기반 페이지네이션으로 반환하는 API입니다.")
     public ApiResponse<CursorPageResponse<ReviewResponseDto>> getReviewsByStore(
         @PathVariable Long storeId,
         @RequestParam(required = false) LocalDateTime cursor,
         @RequestParam(defaultValue = "10") int size) {
         CursorPageResponse<ReviewResponseDto> responseDto = storeReviewFacade.getPagedReview(storeId, cursor, size);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
+    }
+
+    @GetMapping("/search/{keyword}")
+    @Operation(summary = "키워드로 가게 조회", description = "키워드가 가게 이름에 포함된 가게들만 반환하는 API입니다.<br>"
+        + "가게 검색하기 API라고 보시면 됩니다.")
+    public ApiResponse<List<StoreDetailResponseDto>> searchStores(
+        @PathVariable String keyword) {
+        List<StoreDetailResponseDto> responseDto = storeService.searchStores(keyword);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);
     }
