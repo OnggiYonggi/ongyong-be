@@ -1,7 +1,6 @@
-package com.onggiyonggi.domain.item.domain;
+package com.onggiyonggi.domain.receipt.domain;
 
 import com.onggiyonggi.domain.review.domain.Review;
-import com.onggiyonggi.domain.store.domain.Store;
 import com.onggiyonggi.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
