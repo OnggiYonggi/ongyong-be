@@ -28,7 +28,7 @@ public class ReviewResponseDto {
     private Boolean hasLikeByMe;
     private List<ItemResponseDto> itemResponseDtoList;
 
-    public static ReviewResponseDto toDto(Review review) {
+    public static ReviewResponseDto toDto(Review review, List<ItemResponseDto> itemResponseDtoList) {
         return ReviewResponseDto.builder()
             .id(review.getId())
             .memberId(review.getMember().getId())
@@ -39,6 +39,7 @@ public class ReviewResponseDto {
             .fillLevel(review.getFillLevel())
             .foodTaste(review.getFoodTaste())
             .likes(review.getLikes())
+            .itemResponseDtoList(itemResponseDtoList)
             .build();
     }
 

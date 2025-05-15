@@ -1,5 +1,6 @@
 package com.onggiyonggi.domain.review.service;
 
+import com.onggiyonggi.domain.item.dto.response.ItemResponseDto;
 import com.onggiyonggi.domain.item.service.ItemService;
 import com.onggiyonggi.domain.like.service.LikeService;
 import com.onggiyonggi.domain.member.domain.Member;
@@ -33,6 +34,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final StoreService storeService;
     private final LikeService likeService;
+    private final ItemService itemService;
 
     public Long createReview(ReviewRequestDto requestDto, CustomUserDetails customUserDetails) {
         Review review = Review.toEntity(requestDto);
@@ -47,7 +49,8 @@ public class ReviewService {
     public ReviewResponseDto getReviewDetail(Long id, CustomUserDetails customUserDetails) {
         Review review = getReviewById(id);
         Member member = customUserDetails.getMember();
-        ReviewResponseDto responseDto = ReviewResponseDto.toDto(review);
+        List<ItemResponseDto> itemResponseDtoList = itemService.getItemsByReviewId(review.getId());
+        ReviewResponseDto responseDto = ReviewResponseDto.toDto(review, itemResponseDtoList);
         Boolean hasLikeByMe = likeService.isExistByReviewIdAndMemberId(id, member.getId());
         responseDto.setHasLikeByMe(hasLikeByMe);
         return responseDto;
@@ -80,7 +83,7 @@ public class ReviewService {
         Boolean hasNext = hasNextAndTrim(reviews, size);
         LocalDateTime nextCursor = reviews.isEmpty() ? null : reviews.get(reviews.size() - 1).getCreatedAt();
         List<ReviewResponseDto> responseDtos = reviews.stream()
-            .map(ReviewResponseDto::toDto)
+            .map(review -> ReviewResponseDto.toDto(review, itemService.getItemsByReviewId(review.getId())))
             .toList();
         return new CursorPageResponse<>(responseDtos, nextCursor, hasNext);
     }
