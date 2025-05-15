@@ -1,4 +1,4 @@
-package com.onggiyonggi.domain.receipt.dto.response;
+package com.onggiyonggi.domain.item.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

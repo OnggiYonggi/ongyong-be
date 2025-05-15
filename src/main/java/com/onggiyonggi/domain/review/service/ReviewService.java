@@ -1,12 +1,12 @@
 package com.onggiyonggi.domain.review.service;
 
+import com.onggiyonggi.domain.item.service.ItemService;
 import com.onggiyonggi.domain.like.service.LikeService;
 import com.onggiyonggi.domain.member.domain.Member;
 import com.onggiyonggi.domain.review.domain.Review;
 import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewPreviewResponseDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
-import com.onggiyonggi.domain.review.facade.ReviewLikeFacade;
 import com.onggiyonggi.domain.review.repository.ReviewRepository;
 import com.onggiyonggi.domain.store.domain.Store;
 import com.onggiyonggi.domain.store.facade.StoreReviewFacade;

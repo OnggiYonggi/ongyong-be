@@ -1,5 +1,6 @@
-package com.onggiyonggi.domain.receipt.domain;
+package com.onggiyonggi.domain.item.domain;
 
+import com.onggiyonggi.domain.item.dto.request.ItemRequestDto;
 import com.onggiyonggi.domain.review.domain.Review;
 import com.onggiyonggi.global.domain.BaseEntity;
 import jakarta.persistence.Column;
@@ -38,5 +39,14 @@ public class Item extends BaseEntity {
 
     @Column(nullable = false)
     private Long count;
+
+    public static Item toEntity(ItemRequestDto requestDto, Review review) {
+        return Item.builder()
+            .name(requestDto.getName())
+            .review(review)
+            .count(requestDto.getCount())
+            .price(requestDto.getPrice())
+            .build();
+    }
 
 }

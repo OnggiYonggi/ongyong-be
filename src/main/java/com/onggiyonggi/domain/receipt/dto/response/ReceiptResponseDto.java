@@ -1,5 +1,6 @@
 package com.onggiyonggi.domain.receipt.dto.response;
 
+import com.onggiyonggi.domain.item.dto.response.ItemResponseDto;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;

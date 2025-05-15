@@ -1,7 +1,7 @@
 package com.onggiyonggi.domain.receipt.service;
 
 import com.onggiyonggi.domain.receipt.dto.response.ReceiptResponseDto;
-import com.onggiyonggi.domain.receipt.repository.ItemRepository;
+import com.onggiyonggi.domain.item.repository.ItemRepository;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReceiptService {
 
     private final RestTemplate restTemplate;
-    private final ItemRepository itemRepository;
 
     public ReceiptResponseDto analysisReceipt(MultipartFile file) {
         // 이 부분에 AI 서버에 API 요청
