@@ -35,3 +35,6 @@ ncp:
     accessKey: ${NCP_STORAGE_ACCESS_KEY}
     secretKey: ${NCP_STORAGE_SECRET_KEY}
     bucket-name : ${NCP_BUCKET_NAME}
+
+ai:
+  url: ${AI_URL}

@@ -2,8 +2,14 @@ package com.onggiyonggi.domain.receipt.service;
 
 import com.onggiyonggi.domain.receipt.dto.response.ReceiptResponseDto;
 import com.onggiyonggi.domain.item.repository.ItemRepository;
+import com.onggiyonggi.domain.uploadedFile.dto.FileResponseDto;
+import com.onggiyonggi.domain.uploadedFile.service.FileService;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,20 +23,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReceiptService {
 
     private final RestTemplate restTemplate;
+    private final FileService fileService;
+    @Value("${ai.url}")
+    private String aiServerUrl;
 
     public ReceiptResponseDto analysisReceipt(MultipartFile file) {
-        // 이 부분에 AI 서버에 API 요청
-        String aiServerUrl = "실제 AI 서버 주소";
-
         try {
+            FileResponseDto fileResponseDto = fileService.saveFile(file);
+            String imageURL = fileResponseDto.getUrl();
+            log.info(imageURL);
+
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("file", new MultipartInputStreamFileResource(file.getInputStream(), file.getOriginalFilename()));
-            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            Map<String, String> requestBody = new HashMap<>();
+            requestBody.put("url", imageURL);
+
+            HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
 
             ResponseEntity<ReceiptResponseDto> response = restTemplate.exchange(
                 aiServerUrl,
