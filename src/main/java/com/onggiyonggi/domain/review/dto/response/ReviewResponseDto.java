@@ -1,12 +1,12 @@
 package com.onggiyonggi.domain.review.dto.response;
 
-import com.onggiyonggi.domain.member.domain.Member;
+import com.onggiyonggi.domain.item.dto.response.ItemResponseDto;
 import com.onggiyonggi.domain.review.domain.FillLevel;
 import com.onggiyonggi.domain.review.domain.FoodTaste;
 import com.onggiyonggi.domain.review.domain.ReusableContainerSize;
 import com.onggiyonggi.domain.review.domain.ReusableContainerType;
 import com.onggiyonggi.domain.review.domain.Review;
-import com.onggiyonggi.domain.store.domain.Store;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +26,9 @@ public class ReviewResponseDto {
     private FoodTaste foodTaste;
     private Long likes;
     private Boolean hasLikeByMe;
+    private List<ItemResponseDto> itemResponseDtoList;
 
-    public static ReviewResponseDto toDto(Review review) {
+    public static ReviewResponseDto toDto(Review review, List<ItemResponseDto> itemResponseDtoList) {
         return ReviewResponseDto.builder()
             .id(review.getId())
             .memberId(review.getMember().getId())
@@ -38,6 +39,7 @@ public class ReviewResponseDto {
             .fillLevel(review.getFillLevel())
             .foodTaste(review.getFoodTaste())
             .likes(review.getLikes())
+            .itemResponseDtoList(itemResponseDtoList)
             .build();
     }
 
