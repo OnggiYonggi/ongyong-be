@@ -27,7 +27,7 @@ public class PetService {
             Pet pet = getPetByMemberId(member.getId());
             return PetResponseDto.toDto(pet);
         } catch (GeneralException generalException) {
-            List<NaturalMonumentCharacter> naturalMonumentCharacterList = characterService.getAllCharacters();
+            List<NaturalMonumentCharacter> naturalMonumentCharacterList = characterService.getAllCharactersEntity();
             int randomIndex = new Random().nextInt(naturalMonumentCharacterList.size());
             NaturalMonumentCharacter naturalMonumentCharacter = naturalMonumentCharacterList.get(randomIndex);
             Pet pet = Pet.create(member, naturalMonumentCharacter);

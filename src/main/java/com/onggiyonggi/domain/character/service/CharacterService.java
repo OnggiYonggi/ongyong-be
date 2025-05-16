@@ -2,6 +2,7 @@ package com.onggiyonggi.domain.character.service;
 
 import com.onggiyonggi.domain.character.domain.NaturalMonumentCharacter;
 import com.onggiyonggi.domain.character.dto.request.NaturalMonumentCharacterRequestDto;
+import com.onggiyonggi.domain.character.dto.response.NaturalMonumentCharacterResponseDto;
 import com.onggiyonggi.domain.character.repository.CharacterRepository;
 import com.onggiyonggi.global.response.GeneralException;
 import com.onggiyonggi.global.response.Status;
@@ -18,7 +19,13 @@ public class CharacterService {
 
     private final CharacterRepository characterRepository;
 
-    public List<NaturalMonumentCharacter> getAllCharacters() {
+    public List<NaturalMonumentCharacterResponseDto> getAllCharacters() {
+        return getAllCharactersEntity().stream()
+            .map(NaturalMonumentCharacterResponseDto::toDto)
+            .toList();
+    }
+
+    public List<NaturalMonumentCharacter> getAllCharactersEntity() {
         return getAllCharacterEntity();
     }
 
