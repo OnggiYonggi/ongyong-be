@@ -1,5 +1,8 @@
 package com.onggiyonggi.domain.receipt.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onggiyonggi.domain.receipt.dto.response.FlaskResponseWrapper;
 import com.onggiyonggi.domain.receipt.dto.response.ReceiptResponseDto;
 import com.onggiyonggi.domain.item.repository.ItemRepository;
 import com.onggiyonggi.domain.uploadedFile.dto.FileResponseDto;
@@ -38,20 +41,25 @@ public class ReceiptService {
             log.info(imageURL);
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            Map<String, String> requestBody = new HashMap<>();
-            requestBody.put("url", imageURL);
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-            HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
+            MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+            body.add("url", imageURL);  // form field
 
-            ResponseEntity<ReceiptResponseDto> response = restTemplate.exchange(
+            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
+
+            ResponseEntity<FlaskResponseWrapper> response = restTemplate.exchange(
                 aiServerUrl,
                 HttpMethod.POST,
                 requestEntity,
-                ReceiptResponseDto.class
+                FlaskResponseWrapper.class
             );
 
-            return response.getBody();
+            FlaskResponseWrapper wrapper = response.getBody();
+            ReceiptResponseDto result = wrapper.getResponse();
+
+            log.info("📦 최종 응답 DTO: {}", result);
+            return result;
 
         } catch (IOException e) {
             throw new RuntimeException("파일 처리 중 오류 발생", e);
