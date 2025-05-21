@@ -21,9 +21,15 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
     public Long createStore (StoreRequestDto requestDto, StoreRank storeRank) {
-        Store store = Store.toEntity(requestDto);
-        store.updateStoreRank(storeRank);
-        return save(store).getId();
+        String name = requestDto.getName();
+        String address = requestDto.getAddress();
+        Store store = findByNameAndAddress(name, address);
+        if (store != null) {
+            throw new GeneralException(Status.STORE_ALREADY_EXIST);
+        }
+        Store newStore = Store.toEntity(requestDto);
+        newStore.updateStoreRank(storeRank);
+        return save(newStore).getId();
     }
 
     public StoreDetailResponseDto getStoreDetail(Long id) {
@@ -85,6 +91,10 @@ public class StoreService {
         return storeRepository.findStoresWithinRadius(
             latitude, longitude, radius
         );
+    }
+
+    private Store findByNameAndAddress(String storeName, String address) {
+        return storeRepository.findByNameAndAddress(storeName, address);
     }
 
     public void deleteStore(Long id) {
