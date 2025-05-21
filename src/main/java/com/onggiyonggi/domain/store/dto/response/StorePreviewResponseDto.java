@@ -14,6 +14,7 @@ import lombok.Setter;
 public class StorePreviewResponseDto {
 
     private Long id;
+    private String name;
     private StoreRank storeRank;
     private StoreType storeType;
     private Double latitude; // 위도
@@ -22,6 +23,7 @@ public class StorePreviewResponseDto {
     public static StorePreviewResponseDto toDto(Store store) {
         return StorePreviewResponseDto.builder()
             .id(store.getId())
+            .name(store.getName())
             .storeRank(store.getStoreRank())
             .storeType(store.getStoreType())
             .latitude(store.getLatitude())

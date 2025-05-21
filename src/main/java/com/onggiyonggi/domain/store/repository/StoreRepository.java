@@ -43,5 +43,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query("SELECT s FROM Store s WHERE s.name LIKE %:keyword%")
     List<Store> findByNameContainingKeyword(@Param("keyword") String keyword);
 
+    Store findByNameAndAddress(String name, String address);
 
 }
