@@ -71,7 +71,8 @@ public class ReviewService {
         return save(review);
     }
 
-    public CursorPageResponse<ReviewResponseDto> getPagedReviewsByStoreId(Long storeId, LocalDateTime cursor, int size) {
+    public CursorPageResponse<ReviewResponseDto> getPagedReviewsByStoreId(Long storeId, LocalDateTime cursor,
+        int size, Member member) {
         List<Review> reviews;
 
         if (cursor == null) {
@@ -83,7 +84,13 @@ public class ReviewService {
         Boolean hasNext = hasNextAndTrim(reviews, size);
         LocalDateTime nextCursor = reviews.isEmpty() ? null : reviews.get(reviews.size() - 1).getCreatedAt();
         List<ReviewResponseDto> responseDtos = reviews.stream()
-            .map(review -> ReviewResponseDto.toDto(review, itemService.getItemsByReviewId(review.getId())))
+            .map(review -> {
+                List<ItemResponseDto> items = itemService.getItemsByReviewId(review.getId());
+                Boolean hasLikeByMe = likeService.isExistByReviewIdAndMemberId(review.getId(), member.getId());
+                ReviewResponseDto responseDto = ReviewResponseDto.toDto(review, items);
+                responseDto.setHasLikeByMe(hasLikeByMe);
+                return responseDto;
+            })
             .toList();
         return new CursorPageResponse<>(responseDtos, nextCursor, hasNext);
     }

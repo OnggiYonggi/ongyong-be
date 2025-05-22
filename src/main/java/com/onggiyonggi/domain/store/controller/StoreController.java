@@ -8,6 +8,7 @@ import com.onggiyonggi.domain.store.dto.response.StoreDetailResponseDto;
 import com.onggiyonggi.domain.store.dto.response.StorePreviewResponseDto;
 import com.onggiyonggi.domain.store.facade.StoreReviewFacade;
 import com.onggiyonggi.domain.store.service.StoreService;
+import com.onggiyonggi.global.auth.CustomUserDetails;
 import com.onggiyonggi.global.response.ApiResponse;
 import com.onggiyonggi.global.response.CursorPageResponse;
 import com.onggiyonggi.global.response.Status;
@@ -17,6 +18,7 @@ import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -67,8 +69,9 @@ public class StoreController {
     public ApiResponse<CursorPageResponse<ReviewResponseDto>> getReviewsByStore(
         @PathVariable Long storeId,
         @RequestParam(required = false) LocalDateTime cursor,
-        @RequestParam(defaultValue = "10") int size) {
-        CursorPageResponse<ReviewResponseDto> responseDto = storeReviewFacade.getPagedReview(storeId, cursor, size);
+        @RequestParam(defaultValue = "10") int size,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        CursorPageResponse<ReviewResponseDto> responseDto = storeReviewFacade.getPagedReview(storeId, cursor, size, customUserDetails);
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);
     }
