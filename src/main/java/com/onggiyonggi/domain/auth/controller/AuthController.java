@@ -50,9 +50,9 @@ public class AuthController {
             Status.CREATED.getMessage(), null);
     }
 
-    @GetMapping("/test")
-    @Operation(summary = "로그인 테스트 API", description = "로그인 여부를 확인할 수 있는 API입니다. 회원의 닉네임을 리턴합니다.")
-    public ApiResponse<String> test(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    @GetMapping("/me")
+    @Operation(summary = "로그인한 사용자 정보 조회 API", description = "회원의 닉네임을 리턴합니다.")
+    public ApiResponse<String> me(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Member member = customUserDetails.getMember();
         String result = member.getNickName();
         return ApiResponse.success(Status.OK.getCode(),
