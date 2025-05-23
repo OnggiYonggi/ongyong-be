@@ -6,6 +6,7 @@ import com.onggiyonggi.domain.review.domain.FoodTaste;
 import com.onggiyonggi.domain.review.domain.ReusableContainerSize;
 import com.onggiyonggi.domain.review.domain.ReusableContainerType;
 import com.onggiyonggi.domain.review.domain.Review;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +28,8 @@ public class ReviewResponseDto {
     private Long likes;
     private Boolean hasLikeByMe;
     private List<ItemResponseDto> itemResponseDtoList;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static ReviewResponseDto toDto(Review review, List<ItemResponseDto> itemResponseDtoList) {
         return ReviewResponseDto.builder()
@@ -40,6 +43,8 @@ public class ReviewResponseDto {
             .foodTaste(review.getFoodTaste())
             .likes(review.getLikes())
             .itemResponseDtoList(itemResponseDtoList)
+            .createdAt(review.getCreatedAt())
+            .updatedAt(review.getUpdatedAt())
             .build();
     }
 
