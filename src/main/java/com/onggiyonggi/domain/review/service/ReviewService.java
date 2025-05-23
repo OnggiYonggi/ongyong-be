@@ -4,8 +4,17 @@ import com.onggiyonggi.domain.item.dto.response.ItemResponseDto;
 import com.onggiyonggi.domain.item.service.ItemService;
 import com.onggiyonggi.domain.like.service.LikeService;
 import com.onggiyonggi.domain.member.domain.Member;
+import com.onggiyonggi.domain.review.domain.FillLevel;
+import com.onggiyonggi.domain.review.domain.FoodTaste;
+import com.onggiyonggi.domain.review.domain.ReusableContainerSize;
+import com.onggiyonggi.domain.review.domain.ReusableContainerType;
 import com.onggiyonggi.domain.review.domain.Review;
 import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
+import com.onggiyonggi.domain.review.dto.response.AnswerTypeResponseDto;
+import com.onggiyonggi.domain.review.dto.response.FillLevelResponseDto;
+import com.onggiyonggi.domain.review.dto.response.FoodTasteResponseDto;
+import com.onggiyonggi.domain.review.dto.response.ReusableContainerSizeResponseDto;
+import com.onggiyonggi.domain.review.dto.response.ReusableContainerTypeResponseDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewPreviewResponseDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
 import com.onggiyonggi.domain.review.repository.ReviewRepository;
@@ -17,6 +26,7 @@ import com.onggiyonggi.global.response.CursorPageResponse;
 import com.onggiyonggi.global.response.GeneralException;
 import com.onggiyonggi.global.response.Status;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -103,6 +113,40 @@ public class ReviewService {
     public int getReviewCountByStoreId(Long storeId) {
         log.info(countByStoreId(storeId) + "");
         return countByStoreId(storeId);
+    }
+
+    public AnswerTypeResponseDto getEnums() {
+        List<ReusableContainerTypeResponseDto> reusableContainerTypeResponseDtos = getReusableContainerTypes();
+        List<FillLevelResponseDto> fillLevelResponseDtos = getFillLevels();
+        List<FoodTasteResponseDto> foodTasteResponseDtos = getFoodTastes();
+        List<ReusableContainerSizeResponseDto> reusableContainerSizeResponseDtos = getReusableContainerSizes();
+
+        return AnswerTypeResponseDto.of(fillLevelResponseDtos, foodTasteResponseDtos,
+            reusableContainerSizeResponseDtos, reusableContainerTypeResponseDtos);
+    }
+
+    private List<ReusableContainerTypeResponseDto> getReusableContainerTypes() {
+        return Arrays.stream(ReusableContainerType.values())
+            .map(ReusableContainerTypeResponseDto::from)
+            .toList();
+    }
+
+    private List<FillLevelResponseDto> getFillLevels() {
+        return Arrays.stream(FillLevel.values())
+            .map(FillLevelResponseDto::from)
+            .toList();
+    }
+
+    private List<FoodTasteResponseDto> getFoodTastes() {
+        return Arrays.stream(FoodTaste.values())
+            .map(FoodTasteResponseDto::from)
+            .toList();
+    }
+
+    private List<ReusableContainerSizeResponseDto> getReusableContainerSizes() {
+        return Arrays.stream(ReusableContainerSize.values())
+            .map(ReusableContainerSizeResponseDto::from)
+            .toList();
     }
 
     private boolean hasNextAndTrim(List<?> list, int size) {

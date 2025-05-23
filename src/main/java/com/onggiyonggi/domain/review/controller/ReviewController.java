@@ -1,6 +1,7 @@
 package com.onggiyonggi.domain.review.controller;
 
 import com.onggiyonggi.domain.review.dto.request.ReviewRequestDto;
+import com.onggiyonggi.domain.review.dto.response.AnswerTypeResponseDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewPreviewResponseDto;
 import com.onggiyonggi.domain.review.dto.response.ReviewResponseDto;
 import com.onggiyonggi.domain.review.service.ReviewService;
@@ -55,6 +56,14 @@ public class ReviewController {
     @Operation(summary = "내가 작성한 리뷰 리스트 조회 API", description = "내가 작성한 리뷰들의 미리보기를 조회할 수 있는 API입니다")
     public ApiResponse<List<ReviewPreviewResponseDto>> getMyReviewPreview(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         List<ReviewPreviewResponseDto> responseDto = reviewService.getMyReviewPreview(customUserDetails);
+        return ApiResponse.success(Status.OK.getCode(),
+            Status.OK.getMessage(), responseDto);
+    }
+
+    @GetMapping("/enum")
+    @Operation(summary = "리뷰 작성 시 필요한 enum 타입 조회 API", description = "용기에 얼마나 찼는지, 음식 맛은 어떤지, 용기의 크기, 용기의 종류")
+    public ApiResponse<AnswerTypeResponseDto> getEnums() {
+        AnswerTypeResponseDto responseDto = reviewService.getEnums();
         return ApiResponse.success(Status.OK.getCode(),
             Status.OK.getMessage(), responseDto);
     }
