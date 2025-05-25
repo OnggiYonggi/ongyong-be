@@ -15,7 +15,7 @@ public class ReusableContainerSizeResponseDto {
     private String description;
 
     public static ReusableContainerSizeResponseDto from(ReusableContainerSize type) {
-        return new ReusableContainerSizeResponseDto(type.getContainerType().getKey(), type.getSizeLabel());
+        return new ReusableContainerSizeResponseDto(type.getKey(), type.getDescription());
     }
 
 }
