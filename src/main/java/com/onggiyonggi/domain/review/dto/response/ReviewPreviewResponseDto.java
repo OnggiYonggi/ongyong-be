@@ -13,6 +13,7 @@ public class ReviewPreviewResponseDto {
 
     private String imageURL;
     private Long id;
+    private Long storeId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -20,6 +21,7 @@ public class ReviewPreviewResponseDto {
         return ReviewPreviewResponseDto.builder()
             .imageURL(review.getImageURL())
             .id(review.getId())
+            .storeId(review.getStore().getId())
             .createdAt(review.getCreatedAt())
             .updatedAt(review.getUpdatedAt())
             .build();
