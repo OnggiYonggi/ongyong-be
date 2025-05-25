@@ -21,6 +21,7 @@ public class FileUtil {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
+        metadata.setContentDisposition("inline");
         return metadata;
     }
 
